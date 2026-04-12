@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexCore Solutions – Software Consulting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand: #0a2540;
+      --accent: #0066ff;
+      --accent-light: #e8f0fe;
+      --text: #1a1a2e;
+    }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text); }
+    h1,h2,h3,h4,nav { font-family: 'Sora', sans-serif; }
+
+    /* NAV */
+    #navbar { transition: box-shadow 0.3s, background 0.3s; }
+    #navbar.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); background: rgba(255,255,255,0.97); }
+
+    /* HERO gradient */
+    .hero-bg {
+      background: linear-gradient(135deg, #0a2540 0%, #0d3b73 50%, #063466 100%);
+    }
+
+    /* Animated underline on nav links */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width 0.25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Service card hover */
+    .service-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,102,255,0.12); }
+
+    /* Stat counter */
+    .stat-number { font-family: 'Sora', sans-serif; }
+
+    /* Floating hero shape */
+    .hero-shape {
+      position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* Testimonial card */
+    .tcard { border-left: 4px solid var(--accent); }
+
+    /* Mobile menu */
+    #mobile-menu { transition: max-height 0.35s ease, opacity 0.3s ease; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 400px; opacity: 1; }
+
+    /* Section fade-in */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body class="bg-white">
+
+<!-- ===================== NAVBAR ===================== -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <span class="text-xl font-bold text-[#0a2540] tracking-tight">Nex<span class="text-blue-600">Core</span></span>
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#services"    class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Services</a>
+        <a href="#industries"  class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Industries</a>
+        <a href="#about"       class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">About Us</a>
+        <a href="#insights"    class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Insights</a>
+        <a href="#contact"     class="nav-link text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
+      </div>
+
+      <!-- CTA -->
+      <div class="hidden md:flex items-center gap-3">
+        <a href="#contact" class="text-sm font-semibold text-blue-600 hover:underline transition">Log in</a>
+        <a href="#contact" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors">Talk to Us</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100 transition" aria-label="Open menu">
+        <svg id="ham-icon" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path id="ham-lines" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 px-4">
+    <div class="flex flex-col py-4 gap-1">
+      <a href="#services"   class="mobile-link py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Services</a>
+      <a href="#industries" class="mobile-link py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Industries</a>
+      <a href="#about"      class="mobile-link py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">About Us</a>
+      <a href="#insights"   class="mobile-link py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Insights</a>
+      <a href="#contact"    class="mobile-link py-2 px-3 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">Contact</a>
+      <a href="#contact" class="mt-3 bg-blue-600 text-white text-sm font-semibold px-5 py-2 rounded-lg text-center transition hover:bg-blue-700">Talk to Us</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero-bg relative overflow-hidden pt-16">
+  <!-- Background shapes -->
+  <div class="hero-shape w-96 h-96 -top-24 -right-24 opacity-30"></div>
+  <div class="hero-shape w-64 h-64 bottom-0 left-1/4 opacity-20"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36">
+    <div class="grid lg:grid-cols-2 gap-14 items-center">
+
+      <!-- Left copy -->
+      <div>
+        <span class="inline-block bg-blue-500/20 text-blue-200 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 tracking-wider uppercase">Trusted Software Consulting</span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Accelerate Your<br/><span class="text-blue-300">Digital Future</span>
+        </h1>
+        <p class="text-blue-100 text-lg font-light leading-relaxed mb-10 max-w-lg">
+          We partner with enterprises to design, build, and scale technology solutions that drive measurable growth. From cloud migration to AI integration — we make transformation real.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#services" class="bg-blue-500 hover:bg-blue-400 text-white font-semibold px-7 py-3 rounded-lg transition-colors text-sm">Explore Services</a>
+          <a href="#contact"  class="border border-blue-300 hover:border-white text-blue-100 hover:text-white font-semibold px-7 py-3 rounded-lg transition-colors text-sm">Talk to an Expert</a>
+        </div>
+
+        <!-- Hero stats strip -->
+        <div class="mt-14 flex flex-wrap gap-8">
+          <div>
+            <div class="stat-number text-3xl font-bold text-white">500+</div>
+            <div class="text-blue-300 text-sm mt-1">Projects Delivered</div>
+          </div>
+          <div class="w-px bg-blue-700 hidden sm:block"></div>
+          <div>
+            <div class="stat-number text-3xl font-bold text-white">120+</div>
+            <div class="text-blue-300 text-sm mt-1">Enterprise Clients</div>
+          </div>
+          <div class="w-px bg-blue-700 hidden sm:block"></div>
+          <div>
+            <div class="stat-number text-3xl font-bold text-white">18+</div>
+            <div class="text-blue-300 text-sm mt-1">Countries Served</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right visual card -->
+      <div class="hidden lg:block">
+        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
+          <div class="text-blue-200 text-xs font-semibold uppercase tracking-widest mb-6">Our Delivery Model</div>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4 bg-white/10 rounded-xl p-4">
+              <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              </div>
+              <div>
+                <div class="text-white text-sm font-semibold">Strategy & Consulting</div>
+                <div class="text-blue-300 text-xs mt-0.5">Roadmap, architecture, and advisory</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-white/10 rounded-xl p-4">
+              <div class="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+              </div>
+              <div>
+                <div class="text-white text-sm font-semibold">Engineering & Development</div>
+                <div class="text-blue-300 text-xs mt-0.5">Build, test, and ship at speed</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-white/10 rounded-xl p-4">
+              <div class="w-10 h-10 rounded-lg bg-violet-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+              </div>
+              <div>
+                <div class="text-white text-sm font-semibold">Cloud & Infrastructure</div>
+                <div class="text-blue-300 text-xs mt-0.5">Migrate, modernise, optimise</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 bg-white/10 rounded-xl p-4">
+              <div class="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <div>
+                <div class="text-white text-sm font-semibold">AI & Data Analytics</div>
+                <div class="text-blue-300 text-xs mt-0.5">Insights, ML pipelines, GenAI</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave separator -->
+  <div class="relative h-16">
+    <svg class="absolute bottom-0 w-full" viewBox="0 0 1440 64" preserveAspectRatio="none" fill="#ffffff">
+      <path d="M0,64 C360,0 1080,64 1440,16 L1440,64 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ===================== MARQUEE CLIENT STRIP ===================== -->
+<section class="border-y border-gray-100 bg-gray-50 py-6">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex flex-wrap items-center justify-center gap-10 opacity-50">
+      <span class="font-bold text-lg text-gray-400 tracking-tight">TechCorp Inc.</span>
+      <span class="font-bold text-lg text-gray-400 tracking-tight">GlobalBank</span>
+      <span class="font-bold text-lg text-gray-400 tracking-tight">HealthOS</span>
+      <span class="font-bold text-lg text-gray-400 tracking-tight">Retail360</span>
+      <span class="font-bold text-lg text-gray-400 tracking-tight">AutoDriven</span>
+      <span class="font-bold text-lg text-gray-400 tracking-tight">EduPlatform</span>
+    </div>
+    <p class="text-center text-xs text-gray-400 mt-3 font-medium uppercase tracking-widest">Trusted by industry leaders worldwide</p>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section id="services" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <span class="text-blue-600 text-sm font-semibold uppercase tracking-widest">What We Do</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-[#0a2540] mt-3 mb-4">End-to-End Technology Services</h2>
+      <p class="text-gray-500 max-w-2xl mx-auto text-base leading-relaxed">From strategy to execution, we bring the expertise your business needs to compete in a technology-first world.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+      <!-- Card 1 -->
+      <div class="service-card border border-gray-100 rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <h3 class="font-semibold text-[#0a2540] text-lg mb-2">Digital Strategy</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">We help leadership teams define a clear digital roadmap — aligning technology investment with business outcomes.</p>
+        <a href="#contact" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Learn more <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="service-card border border-gray-100 rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+        </div>
+        <h3 class="font-semibold text-[#0a2540] text-lg mb-2">Custom Software Development</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Bespoke web, mobile, and enterprise applications built with modern stacks — delivered iteratively and at scale.</p>
+        <a href="#contact" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Learn more <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="service-card border border-gray-100 rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl bg-violet-50 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+        </div>
+        <h3 class="font-semibold text-[#0a2540] text-lg mb-2">Cloud & DevOps</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Cloud-native architecture, CI/CD pipelines, Kubernetes orchestration — we modernise your infrastructure for resilience and speed.</p>
+        <a href="#contact" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Learn more <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="service-card border border-gray-100 rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <h3 class="font-semibold text-[#0a2540] text-lg mb-2">AI & Data Solutions</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Data engineering, ML model development, generative AI integration — turning raw data into competitive intelligence.</p>
+        <a href="#contact" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Learn more <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="service-card border border-gray-100 rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <h3 class="font-semibold text-[#0a2540] text-lg mb-2">Cybersecurity & Compliance</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Security assessments, zero-trust architecture, GDPR and ISO 27001 compliance guidance to protect your business.</p>
+        <a href="#contact" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Learn more <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="service-card border border-gray-100 rounded-2xl p-7 reveal">
+        <div class="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <h3 class="font-semibold text-[#0a2540] text-lg mb-2">Managed IT Services</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">24/7 support, application management, and IT operations — so your team can focus on building the business.</p>
+        <a href="#contact" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Learn more <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INDUSTRIES ===================== -->
+<section id="industries" class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <span class="text-blue-600 text-sm font-semibold uppercase tracking-widest">Industry Expertise</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-[#0a2540] mt-3 mb-4">Built for Your Sector</h2>
+      <p class="text-gray-500 max-w-xl mx-auto text-base leading-relaxed">Deep domain knowledge across verticals so we speak your language — not just technology's.</p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="reveal bg-white border border-gray-100 rounded-2xl p-5 text-center hover:border-blue-200 hover:bg-blue-50 transition-colors cursor-default group">
+        <div class="text-3xl mb-3">🏦</div>
+        <div class="text-sm font-semibold text-[#0a2540] group-hover:text-blue-700">Banking &<br/>Finance</div>
+      </div>
+      <div class="reveal bg-white border border-gray-100 rounded-2xl p-5 text-center hover:border-blue-200 hover:bg-blue-50 transition-colors cursor-default group">
+        <div class="text-3xl mb-3">🏥</div>
+        <div class="text-sm font-semibold text-[#0a2540] group-hover:text-blue-700">Healthcare &<br/>Life Sciences</div>
+      </div>
+      <div class="reveal bg-white border border-gray-100 rounded-2xl p-5 text-center hover:border-blue-200 hover:bg-blue-50 transition-colors cursor-default group">
+        <div class="text-3xl mb-3">🛒</div>
+        <div class="text-sm font-semibold text-[#0a2540] group-hover:text-blue-700">Retail &<br/>E-Commerce</div>
+      </div>
+      <div class="reveal bg-white border border-gray-100 rounded-2xl p-5 text-center hover:border-blue-200 hover:bg-blue-50 transition-colors cursor-default group">
+        <div class="text-3xl mb-3">🏭</div>
+        <div class="text-sm font-semibold text-[#0a2540] group-hover:text-blue-700">Manufacturing &<br/>Industry</div>
+      </div>
+      <div class="reveal bg-white border border-gray-100 rounded-2xl p-5 text-center hover:border-blue-200 hover:bg-blue-50 transition-colors cursor-default group">
+        <div class="text-3xl mb-3">📡</div>
+        <div class="text-sm font-semibold text-[#0a2540] group-hover:text-blue-700">Telecom &<br/>Media</div>
+      </div>
+      <div class="reveal bg-white border border-gray-100 rounded-2xl p-5 text-center hover:border-blue-200 hover:bg-blue-50 transition-colors cursor-default group">
+        <div class="text-3xl mb-3">🎓</div>
+        <div class="text-sm font-semibold text-[#0a2540] group-hover:text-blue-700">Education &<br/>EdTech</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left -->
+      <div class="reveal">
+        <span class="text-blue-600 text-sm font-semibold uppercase tracking-widest">Who We Are</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#0a2540] mt-3 mb-6">Built by Engineers,<br/>Driven by Outcomes</h2>
+        <p class="text-gray-500 text-base leading-relaxed mb-5">NexCore Solutions is a global software consulting firm founded on one principle: technology should create real, measurable value for businesses and the people they serve.</p>
+        <p class="text-gray-500 text-base leading-relaxed mb-8">With over a decade of delivery experience and 800+ engineers across three continents, we have the depth to tackle your most complex challenges and the agility to move fast.</p>
+
+        <div class="grid grid-cols-2 gap-5">
+          <div class="bg-gray-50 rounded-xl p-5">
+            <div class="text-2xl font-bold text-blue-600">98%</div>
+            <div class="text-sm text-gray-500 mt-1">Client retention rate</div>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5">
+            <div class="text-2xl font-bold text-blue-600">800+</div>
+            <div class="text-sm text-gray-500 mt-1">Engineers globally</div>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5">
+            <div class="text-2xl font-bold text-blue-600">ISO</div>
+            <div class="text-sm text-gray-500 mt-1">27001 & CMMI Level 3</div>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5">
+            <div class="text-2xl font-bold text-blue-600">48hr</div>
+            <div class="text-sm text-gray-500 mt-1">Avg. onboarding time</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right image placeholder -->
+      <div class="reveal">
+        <div class="relative">
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl aspect-video flex flex-col items-center justify-center border border-blue-100">
+            <svg class="w-16 h-16 text-blue-300 mb-3" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span class="text-blue-300 text-sm font-medium">Company / Team Photo Placeholder</span>
+          </div>
+          <!-- floating badge -->
+          <div class="absolute -bottom-5 -left-5 bg-white border border-gray-100 rounded-xl shadow-lg px-5 py-3">
+            <div class="text-xs text-gray-400 mb-0.5">Established</div>
+            <div class="font-bold text-[#0a2540] text-lg">2012 · 3 Continents</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INSIGHTS / BLOG ===================== -->
+<section id="insights" class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 reveal">
+      <div>
+        <span class="text-blue-600 text-sm font-semibold uppercase tracking-widest">Knowledge Hub</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#0a2540] mt-3">Insights & Thinking</h2>
+      </div>
+      <a href="#" class="mt-4 sm:mt-0 text-sm font-semibold text-blue-600 hover:underline">View all articles →</a>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+      <div class="reveal bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 h-44 flex items-center justify-center border-b border-gray-100">
+          <svg class="w-10 h-10 text-blue-300" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="p-6">
+          <span class="text-xs font-semibold text-blue-600 uppercase tracking-wider">AI & Data</span>
+          <h3 class="font-semibold text-[#0a2540] text-base mt-2 mb-2 leading-snug">How Generative AI is Reshaping Enterprise Software in 2025</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">A look at where GenAI delivers the most ROI and what CIOs need to consider before scaling pilots.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Read article <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="reveal bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
+        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 h-44 flex items-center justify-center border-b border-gray-100">
+          <svg class="w-10 h-10 text-emerald-300" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="p-6">
+          <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Cloud</span>
+          <h3 class="font-semibold text-[#0a2540] text-base mt-2 mb-2 leading-snug">The FinOps Checklist: 12 Steps to Optimise Your Cloud Spend</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Cloud costs spiralling? Our engineers share practical steps to cut waste without slowing delivery.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Read article <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+
+      <div class="reveal bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
+        <div class="bg-gradient-to-br from-violet-50 to-violet-100 h-44 flex items-center justify-center border-b border-gray-100">
+          <svg class="w-10 h-10 text-violet-300" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="p-6">
+          <span class="text-xs font-semibold text-violet-600 uppercase tracking-wider">Engineering</span>
+          <h3 class="font-semibold text-[#0a2540] text-base mt-2 mb-2 leading-snug">Platform Engineering: Why Platform Teams Are the New DevOps</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">We break down the shift to internal developer platforms and what it means for engineering velocity.</p>
+          <a href="#" class="inline-flex items-center gap-1 text-blue-600 text-sm font-medium mt-4 hover:gap-2 transition-all">Read article <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <span class="text-blue-600 text-sm font-semibold uppercase tracking-widest">Client Stories</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-[#0a2540] mt-3">What Our Clients Say</h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
+      <div class="tcard reveal bg-gray-50 rounded-2xl p-7">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-amber-400 text-lg">★★★★★</span>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-6">"NexCore transformed our legacy monolith into a microservices architecture in under six months. The team was exceptional — communicative, proactive, and technically superb."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-sm font-bold text-blue-700">SM</div>
+          <div>
+            <div class="font-semibold text-[#0a2540] text-sm">Sarah Mitchell</div>
+            <div class="text-gray-400 text-xs">CTO, GlobalBank Europe</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard reveal bg-gray-50 rounded-2xl p-7">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-amber-400 text-lg">★★★★★</span>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-6">"We needed a data platform that could handle real-time analytics at scale. NexCore built exactly that — on time, on budget, and the system has been rock-solid since day one."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-sm font-bold text-emerald-700">RK</div>
+          <div>
+            <div class="font-semibold text-[#0a2540] text-sm">Rajiv Kumar</div>
+            <div class="text-gray-400 text-xs">VP Engineering, HealthOS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tcard reveal bg-gray-50 rounded-2xl p-7">
+        <div class="flex items-center gap-1 mb-4">
+          <span class="text-amber-400 text-lg">★★★★★</span>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-6">"The cloud migration was complex, but NexCore's structured approach gave us full visibility. We cut infrastructure costs by 35% while improving availability. Outstanding."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center text-sm font-bold text-violet-700">AL</div>
+          <div>
+            <div class="font-semibold text-[#0a2540] text-sm">Anna Larsson</div>
+            <div class="text-gray-400 text-xs">Director of IT, Retail360</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA BAND ===================== -->
+<section class="hero-bg py-20">
+  <div class="max-w-3xl mx-auto px-4 text-center reveal">
+    <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to build something remarkable?</h2>
+    <p class="text-blue-200 text-base mb-8">Talk to our team and get a free 30-minute technology consultation, no strings attached.</p>
+    <a href="#contact" class="inline-block bg-white text-blue-700 font-semibold px-8 py-3.5 rounded-xl hover:bg-blue-50 transition-colors text-sm">Schedule a Free Consultation</a>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16">
+
+      <!-- Left -->
+      <div class="reveal">
+        <span class="text-blue-600 text-sm font-semibold uppercase tracking-widest">Get In Touch</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-[#0a2540] mt-3 mb-6">Let's Start a Conversation</h2>
+        <p class="text-gray-500 text-base leading-relaxed mb-10">Whether you have a specific project in mind or just want to explore what's possible — we'd love to hear from you.</p>
+
+        <div class="space-y-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <div class="font-semibold text-[#0a2540] text-sm">Email</div>
+              <a href="mailto:hello@nexcore.io" class="text-blue-600 text-sm hover:underline">hello@nexcore.io</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            </div>
+            <div>
+              <div class="font-semibold text-[#0a2540] text-sm">Phone</div>
+              <a href="tel:+912200000000" class="text-blue-600 text-sm hover:underline">+91 22 0000 0000</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <div class="font-semibold text-[#0a2540] text-sm">Headquarters</div>
+              <div class="text-gray-500 text-sm">Kolkata, India · London, UK · Singapore</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right — Contact form -->
+      <div class="reveal">
+        <div class="bg-gray-50 border border-gray-100 rounded-2xl p-8">
+          <div class="space-y-5">
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">First name</label>
+                <input type="text" placeholder="Rahul" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Last name</label>
+                <input type="text" placeholder="Sharma" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Work email</label>
+              <input type="email" placeholder="you@company.com" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Company</label>
+              <input type="text" placeholder="Your company" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Service of interest</label>
+              <select class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition">
+                <option>Select a service…</option>
+                <option>Digital Strategy</option>
+                <option>Custom Software Development</option>
+                <option>Cloud & DevOps</option>
+                <option>AI & Data Solutions</option>
+                <option>Cybersecurity</option>
+                <option>Managed IT Services</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Message</label>
+              <textarea rows="4" placeholder="Tell us about your project or challenge…" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition resize-none"></textarea>
+            </div>
+            <button type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg text-sm transition-colors">Send Message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="bg-[#0a2540] text-white pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span class="text-xl font-bold">Nex<span class="text-blue-400">Core</span></span>
+        </div>
+        <p class="text-blue-200 text-sm leading-relaxed mb-6">Software consulting built for the next era of digital business.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-8 h-8 bg-white/10 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="LinkedIn">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="w-8 h-8 bg-white/10 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-colors" aria-label="Twitter">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Links 1 -->
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-widest text-blue-400 mb-4">Services</h4>
+        <ul class="space-y-2.5 text-sm text-blue-200">
+          <li><a href="#services" class="hover:text-white transition">Digital Strategy</a></li>
+          <li><a href="#services" class="hover:text-white transition">Software Development</a></li>
+          <li><a href="#services" class="hover:text-white transition">Cloud & DevOps</a></li>
+          <li><a href="#services" class="hover:text-white transition">AI & Data</a></li>
+          <li><a href="#services" class="hover:text-white transition">Cybersecurity</a></li>
+          <li><a href="#services" class="hover:text-white transition">Managed Services</a></li>
+        </ul>
+      </div>
+
+      <!-- Links 2 -->
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-widest text-blue-400 mb-4">Industries</h4>
+        <ul class="space-y-2.5 text-sm text-blue-200">
+          <li><a href="#industries" class="hover:text-white transition">Banking & Finance</a></li>
+          <li><a href="#industries" class="hover:text-white transition">Healthcare</a></li>
+          <li><a href="#industries" class="hover:text-white transition">Retail & E-Commerce</a></li>
+          <li><a href="#industries" class="hover:text-white transition">Manufacturing</a></li>
+          <li><a href="#industries" class="hover:text-white transition">Telecom & Media</a></li>
+          <li><a href="#industries" class="hover:text-white transition">Education</a></li>
+        </ul>
+      </div>
+
+      <!-- Links 3 -->
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-widest text-blue-400 mb-4">Company</h4>
+        <ul class="space-y-2.5 text-sm text-blue-200">
+          <li><a href="#about"    class="hover:text-white transition">About Us</a></li>
+          <li><a href="#insights" class="hover:text-white transition">Insights</a></li>
+          <li><a href="#contact"  class="hover:text-white transition">Contact</a></li>
+          <li><a href="#"         class="hover:text-white transition">Careers</a></li>
+          <li><a href="#"         class="hover:text-white transition">Privacy Policy</a></li>
+          <li><a href="#"         class="hover:text-white transition">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-blue-300">
+      <span>© 2025 NexCore Solutions Pvt. Ltd. All rights reserved.</span>
+      <span>ISO 27001 Certified &nbsp;·&nbsp; CMMI Level 3</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+  // Hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
