@@ -88,12 +88,25 @@
       color: var(--text-primary);
       text-transform: uppercase;
       text-align: left;
-      /* Hide on tablet/mobile: long legal name overlaps nav links */
+      /* Hidden in “mid” widths where inline nav + long name collide */
       display: none;
     }
+    /* Desktop: full nav + room for legal name */
     @media (min-width: 1280px) {
       .nav-brand-name {
         display: block;
+      }
+    }
+    /* Mobile (hamburger): show beside logo; pills are in the drawer */
+    @media (max-width: 767px) {
+      .nav-brand-name {
+        display: block;
+        flex: 1;
+        min-width: 0;
+        font-size: clamp(0.42rem, 2.5vw, 0.62rem);
+        line-height: 1.15;
+        letter-spacing: 0.04em;
+        overflow-wrap: anywhere;
       }
     }
     [data-theme="light"] .nav-brand-name { color: #0D0F14; }
@@ -260,17 +273,27 @@
     .hero-title .accent-coral { color: var(--coral); }
     .hero-title .accent-teal  { color: var(--teal); }
 
-    /* ---- PILL TAGS ---- */
+    /* ---- PILL TAGS (hero sector chips — dark: visible surface vs page bg) ---- */
     .sector-tag {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--brand-card);
-      border: 1px solid var(--brand-border);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       color: var(--text-muted);
       font-size: 0.75rem; font-weight: 500;
-      padding: 5px 12px; border-radius: 100px;
-      transition: border-color 0.2s, color 0.2s;
+      padding: 6px 14px; border-radius: 100px;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 2px 10px rgba(0, 0, 0, 0.28);
     }
-    .sector-tag:hover { border-color: rgba(68,171,182,0.4); color: var(--teal); }
+    a.sector-tag {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .sector-tag:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(68, 171, 182, 0.42);
+      color: var(--teal);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
     .sector-icon { font-size: 0.9rem; }
 
     /* ---- STAT STRIP ---- */
@@ -523,8 +546,19 @@
     }
 
     [data-theme="light"] .sector-tag {
-      background: #F4F6FA;
-      border: 1px solid rgba(0,0,0,0.08);
+      background: #eef1f6;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    [data-theme="light"] .sector-tag:hover {
+      background: #e8ecf4;
+      border-color: rgba(68, 171, 182, 0.35);
+    }
+    [data-theme="light"] a.sector-tag {
+      color: rgba(13, 15, 20, 0.55);
+    }
+    [data-theme="light"] a.sector-tag:hover {
+      color: var(--teal);
     }
 
     [data-theme="light"] .logo-box { border: none; }
@@ -630,12 +664,19 @@
       margin-bottom: 20px;
     }
     .sf-byline {
+      display: inline-flex;
+      align-items: center;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--coral);
       margin-bottom: 16px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: rgba(224, 80, 98, 0.12);
+      border: 1px solid rgba(224, 80, 98, 0.32);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 2px 10px rgba(0, 0, 0, 0.22);
     }
     .sf-global-note,
     .sf-india-note {
@@ -652,7 +693,19 @@
     [data-theme="light"] .sf-india-note {
       background: rgba(68, 171, 182, 0.08);
     }
+    [data-theme="light"] .sf-byline {
+      background: rgba(224, 80, 98, 0.08);
+      border-color: rgba(224, 80, 98, 0.22);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset, 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    [data-theme="light"] .sf-catchphrase {
+      background: rgba(253, 196, 70, 0.14);
+      border-color: rgba(253, 196, 70, 0.4);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset, 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
     .sf-catchphrase {
+      display: inline-flex;
+      align-items: center;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.2em;
@@ -660,4 +713,58 @@
       color: var(--amber);
       margin-bottom: 18px;
       opacity: 0.92;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: rgba(253, 196, 70, 0.1);
+      border: 1px solid rgba(253, 196, 70, 0.35);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 2px 10px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Education: Programme updates card — prevent horizontal overflow on narrow viewports */
+    .edu-updates-grid {
+      display: grid;
+      gap: 28px;
+      align-items: center;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .edu-updates-grid > * {
+      min-width: 0;
+    }
+    @media (min-width: 769px) {
+      .edu-updates-grid {
+        grid-template-columns: 1fr auto;
+      }
+    }
+    @media (max-width: 768px) {
+      .edu-updates-grid {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+        gap: 20px;
+        padding: 22px 16px !important;
+      }
+    }
+    .edu-updates-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .edu-updates-form .form-input {
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    @media (max-width: 768px) {
+      .edu-updates-form .btn-primary {
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+        white-space: normal;
+        text-align: center;
+      }
     }

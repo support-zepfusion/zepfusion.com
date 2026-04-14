@@ -29,7 +29,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- v= cache-bust so GitHub Pages / browsers pick up zfsx and other CSS updates -->
-  <link rel="stylesheet" href="./zf-styles.css?v=5" />
+  <link rel="stylesheet" href="./zf-styles.css?v=8" />
   <!-- Inline fallback: ensures ZepFusion Skill Exchange hero mark if external CSS is stale or 404 -->
   <style>
     .zfsx-mark{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;letter-spacing:-0.03em;line-height:1.08;margin-bottom:12px}
@@ -236,13 +236,13 @@
 <!-- 3 · Stay informed -->
 <section id="updates" style="padding:72px 0;">
   <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
-    <div class="reveal" style="background:linear-gradient(135deg,rgba(68,171,182,0.1) 0%,rgba(224,80,98,0.08) 100%);border:1px solid rgba(68,171,182,0.22);border-radius:20px;padding:36px 32px;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;" class="edu-updates-grid">
+    <div class="reveal edu-updates-grid" style="background:linear-gradient(135deg,rgba(68,171,182,0.1) 0%,rgba(224,80,98,0.08) 100%);border:1px solid rgba(68,171,182,0.22);border-radius:20px;padding:36px 32px;">
       <div>
         <div class="section-label" style="margin-bottom:10px;">Stay informed</div>
         <h2 class="section-title" style="margin-bottom:10px;font-size:clamp(1.25rem,2.5vw,1.6rem);">Programme updates &amp; roadmap notes</h2>
         <p style="color:var(--text-muted);font-size:0.92rem;line-height:1.65;margin:0;max-width:560px;">Ask to be notified about cohorts, credential milestones, and regional initiatives (including Bharat Skills Exchange). We’ll only use your address for ZepFusion Skill Exchange–related updates.</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;min-width:min(100%,280px);">
+      <div class="edu-updates-form">
         <span style="font-size:0.72rem;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;">Email</span>
         <input id="sf-updates-email" type="email" autocomplete="email" placeholder="you@company.com" aria-label="Email for ZepFusion Skill Exchange updates" class="form-input" style="width:100%;" />
         <a href="index.html#contact" class="btn-primary" style="text-align:center;text-decoration:none;">Request updates →</a>
@@ -523,7 +523,6 @@
     .contact-grid     { grid-template-columns: 1fr !important; }
     .footer-grid      { grid-template-columns: 1fr !important; }
     .edu-cred-grid    { grid-template-columns: 1fr !important; }
-    .edu-updates-grid { grid-template-columns: 1fr !important; }
   }
 </style>
 
