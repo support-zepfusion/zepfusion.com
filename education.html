@@ -9,7 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="zf-styles.css" />
+  <!-- v= cache-bust so GitHub Pages / browsers pick up zfsx and other CSS updates -->
+  <link rel="stylesheet" href="./zf-styles.css?v=3" />
+  <!-- Inline fallback: ensures ZepFusion Skill Exchange hero mark if external CSS is stale or 404 -->
+  <style>
+    .zfsx-mark{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;letter-spacing:-0.03em;line-height:1.08;margin-bottom:12px}
+    .zfsx-mark .zfsx-line1{font-size:clamp(2rem,5vw,3.25rem);margin-bottom:4px}
+    .zfsx-mark .zfsx-zep{color:var(--text-primary,#f0f2f7)}
+    .zfsx-mark .zfsx-fusion{color:var(--teal,#44abb6);text-shadow:0 0 40px rgba(68,171,182,.25)}
+    [data-theme="light"] .zfsx-mark .zfsx-fusion{text-shadow:none}
+    .zfsx-mark .zfsx-line2{font-size:clamp(1.15rem,2.8vw,1.65rem);font-weight:700;letter-spacing:.02em;color:var(--text-primary,#f0f2f7);opacity:.92}
+  </style>
 </head>
 <body>
 
@@ -357,7 +367,7 @@
 
 <div class="section-divider"></div>
 
-<!-- As featured on -->
+<!--
 <section id="featured" style="padding:72px 0;background:var(--brand-surface);">
   <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
     <div class="reveal" style="text-align:center;margin-bottom:32px;">
@@ -372,6 +382,7 @@
     </div>
   </div>
 </section>
+-->
 
 <div class="section-divider"></div>
 
