@@ -88,6 +88,13 @@
       color: var(--text-primary);
       text-transform: uppercase;
       text-align: left;
+      /* Hide on tablet/mobile: long legal name overlaps nav links */
+      display: none;
+    }
+    @media (min-width: 1280px) {
+      .nav-brand-name {
+        display: block;
+      }
     }
     [data-theme="light"] .nav-brand-name { color: #0D0F14; }
     .nav-toolbar-right { flex-shrink: 0; }
