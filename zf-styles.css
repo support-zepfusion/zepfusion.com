@@ -1,14 +1,15 @@
     :root {
-      --brand-dark:    #0d0f14;
-      --brand-surface: #13161e;
-      --brand-card:    #1a1e2a;
-      --brand-border:  rgba(255,255,255,0.07);
+      /* Dark theme: lifted from near-black for softer default (body / bands / cards stay stepped) */
+      --brand-dark:    #141920;
+      --brand-surface: #1a212e;
+      --brand-card:    #232b3a;
+      --brand-border:  rgba(255,255,255,0.09);
       --coral:   #E05062;
       --teal:    #44ABB6;
       --amber:   #FDC446;
       --charcoal:#3E464C;
       --text-primary: #F0F2F7;
-      --text-muted:   rgba(240,242,247,0.55);
+      --text-muted:   rgba(240,242,247,0.58);
     }
 
     * { box-sizing: border-box; }
@@ -37,12 +38,12 @@
     /* ---- NAV ---- */
     #navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(13,15,20,0.72);
+      background: rgba(20,25,32,0.72);
       backdrop-filter: blur(18px) saturate(1.6);
       border-bottom: 1px solid var(--brand-border);
       transition: background 0.3s;
     }
-    #navbar.scrolled { background: rgba(13,15,20,0.96); }
+    #navbar.scrolled { background: rgba(20,25,32,0.96); }
 
     .nav-pill {
       font-size: 0.8rem; font-weight: 500;
@@ -433,7 +434,7 @@
     }
     .form-input:focus { border-color: rgba(68,171,182,0.5); }
     .form-input::placeholder { color: var(--text-muted); }
-    .form-input option { background: #1a1e2a; }
+    .form-input option { background: var(--brand-card); }
     .form-label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; display: block; }
 
     /* ---- CTA BUTTON ---- */
