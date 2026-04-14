@@ -585,24 +585,34 @@
       .edu-grid-3 { grid-template-columns: 1fr !important; }
     }
 
-    /* SkillFusion marketplace brand */
-    .skillfusion-mark {
+    /* ZepFusion Skill Exchange brand */
+    .zfsx-mark {
       font-family: 'Bricolage Grotesque', sans-serif;
       font-weight: 800;
-      font-size: clamp(2.2rem, 5.5vw, 3.6rem);
       letter-spacing: -0.03em;
-      line-height: 1.05;
+      line-height: 1.08;
       margin-bottom: 12px;
     }
-    .skillfusion-mark .sf-skill {
+    .zfsx-mark .zfsx-line1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      margin-bottom: 4px;
+    }
+    .zfsx-mark .zfsx-zep {
       color: var(--text-primary);
     }
-    .skillfusion-mark .sf-fusion {
+    .zfsx-mark .zfsx-fusion {
       color: var(--teal);
       text-shadow: 0 0 40px rgba(68, 171, 182, 0.25);
     }
-    [data-theme="light"] .skillfusion-mark .sf-fusion {
+    [data-theme="light"] .zfsx-mark .zfsx-fusion {
       text-shadow: none;
+    }
+    .zfsx-mark .zfsx-line2 {
+      font-size: clamp(1.15rem, 2.8vw, 1.65rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      opacity: 0.92;
     }
     .sf-tagline {
       font-size: clamp(1rem, 2.2vw, 1.2rem);
