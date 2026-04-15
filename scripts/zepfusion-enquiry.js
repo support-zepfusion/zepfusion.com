@@ -89,9 +89,21 @@
     submitBtn.disabled = true;
     setStatus('info', 'Verifying…');
 
+    var failsafeTimer = setTimeout(function () {
+      submitBtn.disabled = false;
+      setStatus(
+        'error',
+        'This is taking too long. Refresh the page, allow scripts from google.com (turn off ad blockers for zepfusion.com), then try again.'
+      );
+    }, 55000);
+
+    function clearFailsafe() {
+      clearTimeout(failsafeTimer);
+    }
+
     function withTimeout(promise, ms, errMsg) {
       return Promise.race([
-        promise,
+        Promise.resolve(promise),
         new Promise(function (_, reject) {
           setTimeout(function () {
             reject(new Error(errMsg || 'timeout'));
@@ -130,6 +142,7 @@
         })
         .finally(function () {
           clearTimeout(fetchTimer);
+          clearFailsafe();
           submitBtn.disabled = false;
         });
     }
@@ -145,46 +158,59 @@
     }
 
     function runCaptcha() {
-      function execute() {
+      function runToken() {
         if (!window.grecaptcha || !grecaptcha.enterprise) {
+          clearFailsafe();
           setStatus('error', captchaUnavailableMessage());
           submitBtn.disabled = false;
           return;
         }
-        grecaptcha.enterprise.ready(function () {
-          withTimeout(grecaptcha.enterprise.execute(siteKey, { action: action }), 30000, 'captcha-timeout')
-            .then(function (token) {
-              if (!token || String(token).length < 10) {
-                setStatus('error', 'Security verification returned no token. Refresh the page and try again.');
-                submitBtn.disabled = false;
-                return;
-              }
-              send(token);
-            })
+
+        function finishError(msg) {
+          clearFailsafe();
+          setStatus('error', msg);
+          submitBtn.disabled = false;
+        }
+
+        function afterToken(token) {
+          if (!token || String(token).length < 10) {
+            finishError('Security verification returned no token. Refresh the page and try again.');
+            return;
+          }
+          send(token);
+        }
+
+        try {
+          var execPromise = grecaptcha.enterprise.execute(siteKey, { action: action });
+          withTimeout(execPromise, 25000, 'execute-timeout')
+            .then(afterToken)
             .catch(function () {
-              setStatus(
-                'error',
-                'Security check timed out or failed. Refresh the page, disable ad blockers for this site, and try again.'
+              finishError(
+                'Security check timed out or failed. Keep this tab active, refresh, allow google.com (disable ad blockers), and confirm zepfusion.com is allowed for your reCAPTCHA key in Google Cloud.'
               );
-              submitBtn.disabled = false;
             });
-        });
+        } catch (err) {
+          finishError(captchaUnavailableMessage());
+        }
       }
 
       if (window.grecaptcha && grecaptcha.enterprise) {
-        execute();
+        runToken();
         return;
       }
+
+      setStatus('info', 'Loading security check…');
 
       if (enterpriseLoadFailed) {
         enterpriseLoadFailed = false;
         injectEnterpriseScript(
           siteKey,
           function () {
-            execute();
+            runToken();
           },
           function () {
             enterpriseLoadFailed = true;
+            clearFailsafe();
             setStatus('error', captchaUnavailableMessage());
             submitBtn.disabled = false;
           }
@@ -196,9 +222,11 @@
       var t = setInterval(function () {
         if (window.grecaptcha && grecaptcha.enterprise) {
           clearInterval(t);
-          execute();
+          setStatus('info', 'Verifying…');
+          runToken();
         } else if (Date.now() - waitStart > 8000) {
           clearInterval(t);
+          clearFailsafe();
           setStatus('error', captchaUnavailableMessage());
           submitBtn.disabled = false;
         }
