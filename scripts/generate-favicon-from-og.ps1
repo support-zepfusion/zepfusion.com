@@ -29,6 +29,32 @@ function Remove-OgBackground {
   }
 }
 
+function Test-IsBrandAccentPixel {
+  param([int]$r, [int]$g, [int]$b)
+  # Keep teal / coral / amber dots from og-image (approximate ranges).
+  if ($r -gt 150 -and $g -lt 155 -and $b -lt 155 -and ($r - $g) -gt 28) { return $true }
+  if ($b -gt 115 -and $g -gt 105 -and $r -lt 135) { return $true }
+  if ($r -gt 175 -and $g -gt 130 -and $b -lt 135) { return $true }
+  return $false
+}
+
+function Convert-WhiteStrokesToBlack {
+  param([System.Drawing.Bitmap]$bmp)
+  # Curves, fills, and small "ZNP" text: any light non-accent pixel → black (small text uses dimmer AA pixels).
+  $lightMin = 56
+  for ($y = 0; $y -lt $bmp.Height; $y++) {
+    for ($x = 0; $x -lt $bmp.Width; $x++) {
+      $c = $bmp.GetPixel($x, $y)
+      if ($c.A -lt 6) { continue }
+      $r = [int]$c.R; $g = [int]$c.G; $b = [int]$c.B
+      if (Test-IsBrandAccentPixel -r $r -g $g -b $b) { continue }
+      $mx = [Math]::Max($r, [Math]::Max($g, $b))
+      if ($mx -lt $lightMin) { continue }
+      $bmp.SetPixel($x, $y, [System.Drawing.Color]::FromArgb($c.A, 10, 12, 16))
+    }
+  }
+}
+
 function Export-SizePng {
   param($bmp, [int]$size, [string]$outPath)
   $outBmp = New-Object System.Drawing.Bitmap($size, $size, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
@@ -62,11 +88,12 @@ try {
   $g.Dispose()
 
   Remove-OgBackground -bmp $square
+  Convert-WhiteStrokesToBlack -bmp $square
 
   Export-SizePng -bmp $square -size 32 -outPath (Join-Path $base 'favicon.png')
   Export-SizePng -bmp $square -size 180 -outPath (Join-Path $base 'apple-touch-icon.png')
   $square.Dispose()
-  Write-Host "Wrote transparent favicon.png and apple-touch-icon.png"
+  Write-Host "Wrote transparent favicon.png and apple-touch-icon.png (white strokes → black)"
 } finally {
   $src.Dispose()
 }
