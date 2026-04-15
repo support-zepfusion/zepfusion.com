@@ -437,6 +437,36 @@
     .form-input option { background: var(--brand-card); }
     .form-label { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; display: block; }
 
+    .zf-honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .zf-enquiry-privacy {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0 0 12px;
+    }
+    .zf-enquiry-status {
+      font-size: 0.85rem;
+      margin-top: 12px;
+      line-height: 1.5;
+      min-height: 1.2em;
+    }
+    .zf-enquiry-status--success { color: var(--teal); }
+    .zf-enquiry-status--error { color: var(--coral); }
+    .zf-enquiry-status--info { color: var(--text-muted); }
+    .btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-primary:disabled:hover { opacity: 0.65; transform: none; }
+
     /* ---- CTA BUTTON ---- */
     .btn-primary {
       background: var(--coral); color: #fff;
@@ -546,6 +576,8 @@
     [data-theme="light"] .form-input:focus { border-color: rgba(68,171,182,0.6); background: #fff; }
     [data-theme="light"] .form-input::placeholder { color: rgba(13,15,20,0.38); }
     [data-theme="light"] .form-input option { background: #fff; color: #0D0F14; }
+
+    [data-theme="light"] .zf-enquiry-status--error { color: #c43d50; }
 
     [data-theme="light"] .btn-ghost {
       background: #eef1f6;

@@ -28,7 +28,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./zf-styles.css?v=10" />
+  <link rel="stylesheet" href="./zf-styles.css?v=11" />
 </head>
 <body>
 
@@ -672,54 +672,63 @@
       </div>
 
       <div class="reveal">
-        <div style="background:var(--brand-card);border:1px solid var(--brand-border);border-radius:20px;padding:36px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-            <div>
-              <label class="form-label">First name</label>
-              <input type="text" placeholder="Santosh" class="form-input" />
+        <div style="background:var(--brand-card);border:1px solid var(--brand-border);border-radius:20px;padding:36px;position:relative;">
+          <form id="zf-enquiry-form">
+            <input type="hidden" name="source" value="home" />
+            <div class="zf-honeypot" aria-hidden="true">
+              <label for="zf-enquiry-website">Company website</label>
+              <input id="zf-enquiry-website" type="text" name="website" tabindex="-1" autocomplete="off" />
             </div>
-            <div>
-              <label class="form-label">Last name</label>
-              <input type="text" placeholder="Kumar" class="form-input" />
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div>
+                <label class="form-label" for="zf-enquiry-first">First name</label>
+                <input id="zf-enquiry-first" name="firstName" type="text" placeholder="Santosh" class="form-input" autocomplete="given-name" required />
+              </div>
+              <div>
+                <label class="form-label" for="zf-enquiry-last">Last name</label>
+                <input id="zf-enquiry-last" name="lastName" type="text" placeholder="Kumar" class="form-input" autocomplete="family-name" required />
+              </div>
             </div>
-          </div>
-          <div style="margin-bottom:16px;">
-            <label class="form-label">Work email</label>
-            <input type="email" placeholder="you@company.com" class="form-input" />
-          </div>
-          <div style="margin-bottom:16px;">
-            <label class="form-label">Your Industry</label>
-            <select class="form-input">
-              <option value="">Select your industry…</option>
-              <option>Agro-Commerce / Food & Agriculture</option>
-              <option>Pharma & Life Sciences</option>
-              <option>Legal / Law Firm</option>
-              <option>Manufacturing & Industrial</option>
-              <option>Healthcare & Diagnostics</option>
-              <option>ZepFusion Skill Exchange / EdTech / Learning Marketplace</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div style="margin-bottom:16px;">
-            <label class="form-label">Technology need</label>
-            <select class="form-input">
-              <option value="">What are you looking to build?…</option>
-              <option>Custom Software / Web Platform</option>
-              <option>Mobile Application</option>
-              <option>Cloud Architecture / Migration</option>
-              <option>API & System Integration</option>
-              <option>ERP / SAP Implementation</option>
-              <option>Blockchain Solution</option>
-              <option>Education Marketplace / Credential Platform</option>
-              <option>AI / ML / NLP Platform</option>
-              <option>Turnkey End-to-End Product</option>
-            </select>
-          </div>
-          <div style="margin-bottom:24px;">
-            <label class="form-label">Tell us about your challenge</label>
-            <textarea rows="4" placeholder="Describe your current process pain points and what you'd like technology to solve…" class="form-input" style="resize:none;"></textarea>
-          </div>
-          <button type="button" class="btn-primary" style="width:100%;justify-content:center;">Send Message →</button>
+            <div style="margin-bottom:16px;">
+              <label class="form-label" for="zf-enquiry-email">Work email</label>
+              <input id="zf-enquiry-email" name="email" type="email" placeholder="you@company.com" class="form-input" autocomplete="email" required />
+            </div>
+            <div style="margin-bottom:16px;">
+              <label class="form-label" for="zf-enquiry-industry">Your Industry</label>
+              <select id="zf-enquiry-industry" name="industry" class="form-input" required>
+                <option value="">Select your industry…</option>
+                <option value="Agro-Commerce / Food &amp; Agriculture">Agro-Commerce / Food &amp; Agriculture</option>
+                <option value="Pharma &amp; Life Sciences">Pharma &amp; Life Sciences</option>
+                <option value="Legal / Law Firm">Legal / Law Firm</option>
+                <option value="Manufacturing &amp; Industrial">Manufacturing &amp; Industrial</option>
+                <option value="Healthcare &amp; Diagnostics">Healthcare &amp; Diagnostics</option>
+                <option value="ZepFusion Skill Exchange / EdTech / Learning Marketplace">ZepFusion Skill Exchange / EdTech / Learning Marketplace</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label class="form-label" for="zf-enquiry-tech">Technology need</label>
+              <select id="zf-enquiry-tech" name="techNeed" class="form-input" required>
+                <option value="">What are you looking to build?…</option>
+                <option value="Custom Software / Web Platform">Custom Software / Web Platform</option>
+                <option value="Mobile Application">Mobile Application</option>
+                <option value="Cloud Architecture / Migration">Cloud Architecture / Migration</option>
+                <option value="API &amp; System Integration">API &amp; System Integration</option>
+                <option value="ERP / SAP Implementation">ERP / SAP Implementation</option>
+                <option value="Blockchain Solution">Blockchain Solution</option>
+                <option value="Education Marketplace / Credential Platform">Education Marketplace / Credential Platform</option>
+                <option value="AI / ML / NLP Platform">AI / ML / NLP Platform</option>
+                <option value="Turnkey End-to-End Product">Turnkey End-to-End Product</option>
+              </select>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label class="form-label" for="zf-enquiry-message">Tell us about your challenge</label>
+              <textarea id="zf-enquiry-message" name="message" rows="4" placeholder="Describe your current process pain points and what you'd like technology to solve…" class="form-input" style="resize:none;" required></textarea>
+            </div>
+            <p class="zf-enquiry-privacy">By sending this form you agree that we may contact you about your enquiry. Protected by Google reCAPTCHA Enterprise.</p>
+            <div id="zf-enquiry-status" class="zf-enquiry-status" hidden></div>
+            <button type="submit" id="zf-enquiry-submit" class="btn-primary" style="width:100%;justify-content:center;">Send Message →</button>
+          </form>
         </div>
       </div>
 
@@ -857,5 +866,14 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal, .reveal-left').forEach(el => obs.observe(el));
 </script>
+<script>
+  /* Paste your Apps Script Web App URL (ends with /exec) after deploying scripts/zepfusion-enquiry.appscript.gs */
+  window.ZF_ENQUIRY_CONFIG = {
+    scriptUrl: 'https://script.google.com/macros/s/AKfycbxTXajxqqZGE7gukCCxuMHNrU4b5y-50goSUbRThwj5Vn0x1Kcq-K7bzoMbl2g6uoaA/exec',
+    siteKey: '6LfWgLgsAAAAAD9To06BgB2INXWCItosgmxdMdi0',
+    action: 'enquiry_submit'
+  };
+</script>
+<script src="./scripts/zepfusion-enquiry.js?v=2" defer></script>
 </body>
 </html>
