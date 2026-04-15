@@ -1,6 +1,7 @@
 /**
  * Zepfusion contact form → Google Apps Script Web App (Sheet + reCAPTCHA Enterprise).
- * Configure window.ZF_ENQUIRY_CONFIG before this file (see index.html).
+ * Uses Google Cloud “widget” integration: plain enterprise.js (no ?render=) + grecaptcha.enterprise.render.
+ * Configure window.ZF_ENQUIRY_CONFIG in index.html <head>.
  */
 (function () {
   var form = document.getElementById('zf-enquiry-form');
@@ -22,8 +23,11 @@
   }
 
   var enterpriseLoadFailed = false;
+  /** Set after grecaptcha.enterprise.render (number widget id). */
+  var widgetId = null;
+  var widgetRendered = false;
 
-  function injectEnterpriseScript(siteKey, onload, onerror) {
+  function injectEnterpriseScript(onload, onerror) {
     if (window.grecaptcha && window.grecaptcha.enterprise) {
       onload();
       return;
@@ -46,8 +50,10 @@
     }
     var s = document.createElement('script');
     s.setAttribute('data-zf-recaptcha-enterprise', '1');
-    s.src = 'https://www.google.com/recaptcha/enterprise.js?render=' + encodeURIComponent(siteKey);
+    s.id = 'zf-recaptcha-enterprise-loader';
     s.async = true;
+    s.defer = true;
+    s.src = 'https://www.google.com/recaptcha/enterprise.js';
     s.onload = onload;
     s.onerror = onerror;
     document.head.appendChild(s);
@@ -55,10 +61,86 @@
 
   var siteKey = (cfg().siteKey || '').trim();
 
+  function captchaUnavailableMessage() {
+    if (window.location && window.location.protocol === 'file:') {
+      return 'Open this page from your live site (https://zepfusion.com) or a local server — reCAPTCHA does not run from a saved file (file://).';
+    }
+    if (window.ZF_RECAPTCHA_LOAD_FAILED) {
+      return 'reCAPTCHA could not load (blocked or offline). Allow google.com and gstatic.com, turn off ad blockers for this site, then refresh.';
+    }
+    if (enterpriseLoadFailed) {
+      return 'The security script was blocked or could not load. Allow scripts from google.com on this page (pause ad blockers / privacy extensions), then refresh. In Google Cloud → reCAPTCHA Enterprise, ensure this domain is allowed for your key.';
+    }
+    return 'Security check is still loading. Wait a few seconds and try again, or refresh the page.';
+  }
+
+  function renderWidget() {
+    var host = document.getElementById('zf-recaptcha');
+    if (!host || !siteKey || widgetRendered) return;
+    if (!window.grecaptcha || !grecaptcha.enterprise) return;
+
+    grecaptcha.enterprise.ready(function () {
+      if (widgetRendered) return;
+      try {
+        var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        widgetId = grecaptcha.enterprise.render('zf-recaptcha', {
+          sitekey: siteKey,
+          theme: isLight ? 'light' : 'dark',
+        });
+        widgetRendered = true;
+      } catch (err) {
+        setStatus('error', 'Could not show security check. Refresh the page or email support@zepfusion.com.');
+      }
+    });
+  }
+
+  function ensureApiThenRender() {
+    if (window.grecaptcha && grecaptcha.enterprise) {
+      renderWidget();
+      return;
+    }
+    if (window.ZF_RECAPTCHA_LOAD_FAILED) return;
+    var n = 0;
+    var t = setInterval(function () {
+      if (window.grecaptcha && grecaptcha.enterprise) {
+        clearInterval(t);
+        renderWidget();
+      } else if (window.ZF_RECAPTCHA_LOAD_FAILED) {
+        clearInterval(t);
+      } else if (++n > 200) {
+        clearInterval(t);
+        if (!enterpriseLoadFailed) {
+          enterpriseLoadFailed = true;
+          injectEnterpriseScript(
+            function () {
+              enterpriseLoadFailed = false;
+              renderWidget();
+            },
+            function () {
+              enterpriseLoadFailed = true;
+            }
+          );
+        }
+      }
+    }, 50);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ensureApiThenRender);
+  } else {
+    ensureApiThenRender();
+  }
+
+  document.addEventListener('zf-theme-changed', function () {
+    if (!widgetRendered || widgetId === null) return;
+    try {
+      grecaptcha.enterprise.reset(widgetId);
+    } catch (e) {}
+  });
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var c = cfg();
-    var action = (c.action || 'enquiry_submit').trim();
     var endpoint = (c.scriptUrl || '').trim();
 
     if (!endpoint) {
@@ -92,17 +174,6 @@
       clearTimeout(failsafeTimer);
     }
 
-    function withTimeout(promise, ms, errMsg) {
-      return Promise.race([
-        Promise.resolve(promise),
-        new Promise(function (_, reject) {
-          setTimeout(function () {
-            reject(new Error(errMsg || 'timeout'));
-          }, ms);
-        }),
-      ]);
-    }
-
     function send(token) {
       setStatus('info', 'Sending…');
       var params = new URLSearchParams();
@@ -126,6 +197,11 @@
       })
         .then(function () {
           form.reset();
+          if (widgetId !== null && window.grecaptcha && grecaptcha.enterprise) {
+            try {
+              grecaptcha.enterprise.reset(widgetId);
+            } catch (err) {}
+          }
           setStatus('success', 'Thank you — we received your message and will get back to you soon.');
         })
         .catch(function () {
@@ -138,110 +214,33 @@
         });
     }
 
-    function captchaUnavailableMessage() {
-      if (window.location && window.location.protocol === 'file:') {
-        return 'Open this page from your live site (https://zepfusion.com) or a local server — reCAPTCHA does not run from a saved file (file://).';
-      }
-      if (window.ZF_RECAPTCHA_LOAD_FAILED) {
-        return 'reCAPTCHA could not load (blocked or offline). Allow google.com and gstatic.com, turn off ad blockers for this site, then refresh.';
-      }
-      if (enterpriseLoadFailed) {
-        return 'The security script was blocked or could not load. Allow scripts from google.com on this page (pause ad blockers / privacy extensions), then refresh. In Google Cloud → reCAPTCHA Enterprise, ensure this domain is allowed for your key.';
-      }
-      return 'Security check is still loading. Wait a few seconds and try again, or refresh the page.';
+    function finishError(msg) {
+      clearFailsafe();
+      setStatus('error', msg);
+      submitBtn.disabled = false;
     }
 
-    function runCaptcha() {
-      function runToken() {
-        setStatus('info', 'Verifying…');
-
-        if (!window.grecaptcha || !grecaptcha.enterprise) {
-          clearFailsafe();
-          setStatus('error', captchaUnavailableMessage());
-          submitBtn.disabled = false;
-          return;
-        }
-
-        function finishError(msg) {
-          clearFailsafe();
-          setStatus('error', msg);
-          submitBtn.disabled = false;
-        }
-
-        function afterToken(token) {
-          if (!token || String(token).length < 10) {
-            finishError('Security verification returned no token. Refresh the page and try again.');
-            return;
-          }
-          send(token);
-        }
-
-        try {
-          var execPromise = grecaptcha.enterprise.execute(siteKey, { action: action });
-          withTimeout(execPromise, 25000, 'execute-timeout')
-            .then(afterToken)
-            .catch(function () {
-              finishError(
-                'Security check timed out or failed. Keep this tab active, refresh, allow google.com (disable ad blockers), and confirm zepfusion.com is allowed for your reCAPTCHA key in Google Cloud.'
-              );
-            });
-        } catch (err) {
-          finishError(captchaUnavailableMessage());
-        }
-      }
-
-      if (window.ZF_RECAPTCHA_LOAD_FAILED && !window.grecaptcha) {
-        clearFailsafe();
-        setStatus('error', captchaUnavailableMessage());
-        submitBtn.disabled = false;
-        return;
-      }
-
-      if (window.grecaptcha && grecaptcha.enterprise) {
-        runToken();
-        return;
-      }
-
-      setStatus('info', 'Loading security check…');
-
-      if (enterpriseLoadFailed) {
-        enterpriseLoadFailed = false;
-        injectEnterpriseScript(
-          siteKey,
-          function () {
-            runToken();
-          },
-          function () {
-            enterpriseLoadFailed = true;
-            clearFailsafe();
-            setStatus('error', captchaUnavailableMessage());
-            submitBtn.disabled = false;
-          }
-        );
-        return;
-      }
-
-      var waitStart = Date.now();
-      var t = setInterval(function () {
-        if (window.ZF_RECAPTCHA_LOAD_FAILED && !window.grecaptcha) {
-          clearInterval(t);
-          clearFailsafe();
-          setStatus('error', captchaUnavailableMessage());
-          submitBtn.disabled = false;
-          return;
-        }
-        if (window.grecaptcha && grecaptcha.enterprise) {
-          clearInterval(t);
-          runToken();
-        } else if (Date.now() - waitStart > 15000) {
-          clearInterval(t);
-          clearFailsafe();
-          setStatus('error', captchaUnavailableMessage());
-          submitBtn.disabled = false;
-        }
-      }, 100);
+    if (window.ZF_RECAPTCHA_LOAD_FAILED && !window.grecaptcha) {
+      finishError(captchaUnavailableMessage());
+      return;
     }
 
-    runCaptcha();
+    if (!window.grecaptcha || !grecaptcha.enterprise) {
+      finishError(captchaUnavailableMessage());
+      return;
+    }
+
+    if (widgetId === null || widgetId === undefined) {
+      finishError('Security check is still loading. Wait a moment and try again.');
+      return;
+    }
+
+    var token = grecaptcha.enterprise.getResponse(widgetId);
+    if (!token || String(token).length < 10) {
+      finishError('Please complete the security check above, then click Send again.');
+      return;
+    }
+
+    send(token);
   });
 })();

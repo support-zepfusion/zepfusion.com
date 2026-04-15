@@ -445,6 +445,15 @@
       overflow: hidden;
       pointer-events: none;
     }
+    .zf-recaptcha-host {
+      min-height: 78px;
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .zf-recaptcha-host iframe {
+      max-width: 100%;
+    }
     .zf-enquiry-privacy {
       font-size: 0.75rem;
       color: var(--text-muted);

@@ -28,7 +28,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./zf-styles.css?v=11" />
+  <link rel="stylesheet" href="./zf-styles.css?v=12" />
   <link rel="preconnect" href="https://www.google.com" />
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
   <script>
@@ -38,20 +38,14 @@
       action: 'enquiry_submit'
     };
   </script>
-  <script>
-    (function () {
-      var k = (window.ZF_ENQUIRY_CONFIG && window.ZF_ENQUIRY_CONFIG.siteKey) || '';
-      if (!k) return;
-      var s = document.createElement('script');
-      s.id = 'zf-recaptcha-enterprise-loader';
-      s.async = true;
-      s.src = 'https://www.google.com/recaptcha/enterprise.js?render=' + encodeURIComponent(k);
-      s.onerror = function () {
-        window.ZF_RECAPTCHA_LOAD_FAILED = true;
-      };
-      document.head.appendChild(s);
-    })();
-  </script>
+  <!-- reCAPTCHA Enterprise: plain loader (no ?render=) per Google Cloud docs; widget rendered in #zf-recaptcha -->
+  <script
+    id="zf-recaptcha-enterprise-loader"
+    src="https://www.google.com/recaptcha/enterprise.js"
+    async
+    defer
+    onerror="window.ZF_RECAPTCHA_LOAD_FAILED=true"
+  ></script>
 </head>
 <body>
 
@@ -748,6 +742,10 @@
               <label class="form-label" for="zf-enquiry-message">Tell us about your challenge</label>
               <textarea id="zf-enquiry-message" name="message" rows="4" placeholder="Describe your current process pain points and what you'd like technology to solve…" class="form-input" style="resize:none;" required></textarea>
             </div>
+            <div style="margin-bottom:16px;">
+              <span class="form-label" id="zf-recaptcha-label">Security check</span>
+              <div id="zf-recaptcha" class="zf-recaptcha-host" aria-labelledby="zf-recaptcha-label"></div>
+            </div>
             <p class="zf-enquiry-privacy">By sending this form you agree that we may contact you about your enquiry. Protected by Google reCAPTCHA Enterprise.</p>
             <div id="zf-enquiry-status" class="zf-enquiry-status" hidden></div>
             <button type="submit" id="zf-enquiry-submit" class="btn-primary" style="width:100%;justify-content:center;">Send Message →</button>
@@ -842,6 +840,7 @@
   function setTheme(theme) {
     html.setAttribute('data-theme', theme);
     localStorage.setItem('zf-theme', theme);
+    document.dispatchEvent(new CustomEvent('zf-theme-changed', { detail: { theme } }));
     if (theme === 'light') {
       moonIcons.forEach(i => i && (i.style.display = 'none'));
       sunIcons.forEach(i  => i && (i.style.display = 'block'));
@@ -889,6 +888,6 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal, .reveal-left').forEach(el => obs.observe(el));
 </script>
-<script src="./scripts/zepfusion-enquiry.js?v=5" defer></script>
+<script src="./scripts/zepfusion-enquiry.js?v=7" defer></script>
 </body>
 </html>
