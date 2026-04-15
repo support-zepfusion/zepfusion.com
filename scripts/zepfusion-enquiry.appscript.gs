@@ -11,6 +11,9 @@
  *    SPREADSHEET_ID          = required if this project is NOT bound to the Sheet (copy from the Sheet URL:
  *                            https://docs.google.com/spreadsheets/d/THIS_PART/edit )
  *    SHEET_NAME              = optional tab name (default: active/first sheet)
+ *    RECAPTCHA_MIN_SCORE     = optional, 0–1 (default 0.5). When the assessment returns a
+ *                            risk score, submissions below this are rejected. Omit property
+ *                            to use the default. Set e.g. 0.3 to be more permissive.
  *
  * 3. GCP: enable "reCAPTCHA Enterprise API"; create an API key restricted to that API.
  *
@@ -24,7 +27,8 @@
  * for checkbox flows (see verifyEnterpriseToken_).
  */
 var RECAPTCHA_ACTION = 'enquiry_submit';
-var MIN_SCORE = 0.3;
+/** Used when Script property RECAPTCHA_MIN_SCORE is not set. 0.5 is a common stricter cutoff. */
+var DEFAULT_MIN_SCORE = 0.5;
 
 function doGet() {
   return ContentService.createTextOutput(
@@ -53,8 +57,12 @@ function doPost(e) {
   var apiKey = props.getProperty('RECAPTCHA_ENTERPRISE_API_KEY');
   var siteKey = props.getProperty('RECAPTCHA_SITE_KEY');
 
-  var check = verifyEnterpriseToken_(token, siteKey, projectId, apiKey);
+  var minScore = resolveMinScore_(props);
+  var check = verifyEnterpriseToken_(token, siteKey, projectId, apiKey, minScore);
   if (!check.ok) {
+    if (check.reason === 'low_score') {
+      return textOut_('error: score');
+    }
     return textOut_('error: captcha');
   }
 
@@ -108,6 +116,19 @@ function textOut_(s) {
   return ContentService.createTextOutput(s).setMimeType(ContentService.MimeType.TEXT);
 }
 
+/** Min risk score 0–1 (higher = more likely legitimate). Script property RECAPTCHA_MIN_SCORE overrides. */
+function resolveMinScore_(props) {
+  var raw = props.getProperty('RECAPTCHA_MIN_SCORE');
+  if (raw == null || String(raw).replace(/\s/g, '') === '') {
+    return DEFAULT_MIN_SCORE;
+  }
+  var n = parseFloat(String(raw).replace(',', '.'));
+  if (isNaN(n) || n < 0 || n > 1) {
+    return DEFAULT_MIN_SCORE;
+  }
+  return n;
+}
+
 /**
  * Web apps often have no "active" spreadsheet unless the script was created via the Sheet
  * (Extensions → Apps Script). If SPREADSHEET_ID is set, open that file by id.
@@ -144,13 +165,12 @@ function getEnquirySheet_(props) {
 }
 
 /**
- * Checkbox / challenge tokens: tokenProperties.valid is the main signal.
- * Do not send expectedAction in createAssessment for checkbox widgets — it can cause
- * mismatches. Score-based (execute) tokens include riskAnalysis.score; only then apply MIN_SCORE.
+ * When riskAnalysis.score is present (0–1), it must be >= minScore or the request is rejected.
+ * If the API omits a score (some checkbox-only responses), we still accept when valid === true.
  */
-function verifyEnterpriseToken_(token, siteKey, projectId, apiKey) {
+function verifyEnterpriseToken_(token, siteKey, projectId, apiKey, minScore) {
   if (!token || !siteKey || !projectId || !apiKey) {
-    return { ok: false, score: '' };
+    return { ok: false, score: '', reason: 'config' };
   }
   var url =
     'https://recaptchaenterprise.googleapis.com/v1/projects/' +
@@ -172,26 +192,29 @@ function verifyEnterpriseToken_(token, siteKey, projectId, apiKey) {
   var code = resp.getResponseCode();
   var text = resp.getContentText();
   if (code !== 200) {
-    return { ok: false, score: '' };
+    Logger.log('reCAPTCHA Enterprise HTTP ' + code + ' ' + String(text).substring(0, 400));
+    return { ok: false, score: '', reason: 'http' };
   }
-  var body = JSON.parse(text);
+  var body;
+  try {
+    body = JSON.parse(text);
+  } catch (parseErr) {
+    Logger.log('reCAPTCHA Enterprise JSON parse error: ' + String(text).substring(0, 400));
+    return { ok: false, score: '', reason: 'parse' };
+  }
   var valid = body.tokenProperties && body.tokenProperties.valid === true;
-  var act = (body.tokenProperties && body.tokenProperties.action) || '';
   var scoreNum = body.riskAnalysis && typeof body.riskAnalysis.score === 'number' ? body.riskAnalysis.score : null;
 
   if (!valid) {
-    return { ok: false, score: scoreNum !== null ? scoreNum : '' };
-  }
-  if (act !== '' && act !== RECAPTCHA_ACTION) {
-    return { ok: false, score: scoreNum !== null ? scoreNum : '' };
+    Logger.log('reCAPTCHA token invalid: ' + JSON.stringify(body.tokenProperties || {}));
+    return { ok: false, score: scoreNum !== null ? scoreNum : '', reason: 'invalid' };
   }
 
-  /** Checkbox challenge: action is usually empty — rely on valid. Score-based execute: enforce MIN_SCORE. */
-  var ok = true;
-  if (act === RECAPTCHA_ACTION) {
-    ok = scoreNum !== null && scoreNum >= MIN_SCORE;
+  if (scoreNum !== null && scoreNum < minScore) {
+    Logger.log('reCAPTCHA score too low: ' + scoreNum + ' (min ' + minScore + ')');
+    return { ok: false, score: scoreNum, reason: 'low_score' };
   }
 
   var scoreCell = scoreNum !== null ? scoreNum : '';
-  return { ok: ok, score: scoreCell };
+  return { ok: true, score: scoreCell, reason: '' };
 }

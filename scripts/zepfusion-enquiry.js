@@ -221,7 +221,9 @@
           var errMsg =
             text.indexOf('error: captcha') === 0
               ? 'Security verification failed. Complete the checkbox again and try, or email support@zepfusion.com.'
-              : text.indexOf('error: sheet') === 0
+              : text.indexOf('error: score') === 0
+                ? 'This submission could not be verified as high-trust. Please try again in a moment, or email support@zepfusion.com.'
+                : text.indexOf('error: sheet') === 0
                 ? 'The form could not write to the enquiry sheet. In Apps Script → Project Settings → Script properties, set SPREADSHEET_ID to your Google Sheet id (from the Sheet URL), redeploy the web app, then try again.'
                 : text.indexOf('error:') === 0
                   ? 'Could not save your message. Please try again or email support@zepfusion.com.'
