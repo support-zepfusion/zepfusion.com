@@ -28,11 +28,17 @@
       onload();
       return;
     }
-    var existing = document.querySelector('script[data-zf-recaptcha-enterprise]');
+    var existing =
+      document.getElementById('zf-recaptcha-enterprise-loader') ||
+      document.querySelector('script[data-zf-recaptcha-enterprise]');
     if (existing) {
       if (enterpriseLoadFailed) {
         existing.remove();
       } else {
+        if (window.grecaptcha && window.grecaptcha.enterprise) {
+          onload();
+          return;
+        }
         existing.addEventListener('load', onload);
         existing.addEventListener('error', onerror);
         return;
@@ -47,22 +53,7 @@
     document.head.appendChild(s);
   }
 
-  function loadEnterpriseScript(siteKey) {
-    injectEnterpriseScript(
-      siteKey,
-      function () {
-        enterpriseLoadFailed = false;
-      },
-      function () {
-        enterpriseLoadFailed = true;
-      }
-    );
-  }
-
   var siteKey = (cfg().siteKey || '').trim();
-  if (siteKey) {
-    loadEnterpriseScript(siteKey);
-  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -151,6 +142,9 @@
       if (window.location && window.location.protocol === 'file:') {
         return 'Open this page from your live site (https://zepfusion.com) or a local server — reCAPTCHA does not run from a saved file (file://).';
       }
+      if (window.ZF_RECAPTCHA_LOAD_FAILED) {
+        return 'reCAPTCHA could not load (blocked or offline). Allow google.com and gstatic.com, turn off ad blockers for this site, then refresh.';
+      }
       if (enterpriseLoadFailed) {
         return 'The security script was blocked or could not load. Allow scripts from google.com on this page (pause ad blockers / privacy extensions), then refresh. In Google Cloud → reCAPTCHA Enterprise, ensure this domain is allowed for your key.';
       }
@@ -159,6 +153,8 @@
 
     function runCaptcha() {
       function runToken() {
+        setStatus('info', 'Verifying…');
+
         if (!window.grecaptcha || !grecaptcha.enterprise) {
           clearFailsafe();
           setStatus('error', captchaUnavailableMessage());
@@ -194,6 +190,13 @@
         }
       }
 
+      if (window.ZF_RECAPTCHA_LOAD_FAILED && !window.grecaptcha) {
+        clearFailsafe();
+        setStatus('error', captchaUnavailableMessage());
+        submitBtn.disabled = false;
+        return;
+      }
+
       if (window.grecaptcha && grecaptcha.enterprise) {
         runToken();
         return;
@@ -220,11 +223,17 @@
 
       var waitStart = Date.now();
       var t = setInterval(function () {
+        if (window.ZF_RECAPTCHA_LOAD_FAILED && !window.grecaptcha) {
+          clearInterval(t);
+          clearFailsafe();
+          setStatus('error', captchaUnavailableMessage());
+          submitBtn.disabled = false;
+          return;
+        }
         if (window.grecaptcha && grecaptcha.enterprise) {
           clearInterval(t);
-          setStatus('info', 'Verifying…');
           runToken();
-        } else if (Date.now() - waitStart > 8000) {
+        } else if (Date.now() - waitStart > 15000) {
           clearInterval(t);
           clearFailsafe();
           setStatus('error', captchaUnavailableMessage());

@@ -29,6 +29,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="./zf-styles.css?v=11" />
+  <link rel="preconnect" href="https://www.google.com" />
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+  <script>
+    window.ZF_ENQUIRY_CONFIG = {
+      scriptUrl: 'https://script.google.com/macros/s/AKfycbyYC1zpHeENIxVZe_vGLqKapwbiBogWyXwdBvQpuDWFMNg3R1kcb4HsxOklKZ_ErOU6/exec',
+      siteKey: '6LfWgLgsAAAAAD9To06BgB2INXWCItosgmxdMdi0',
+      action: 'enquiry_submit'
+    };
+  </script>
+  <script>
+    (function () {
+      var k = (window.ZF_ENQUIRY_CONFIG && window.ZF_ENQUIRY_CONFIG.siteKey) || '';
+      if (!k) return;
+      var s = document.createElement('script');
+      s.id = 'zf-recaptcha-enterprise-loader';
+      s.async = true;
+      s.src = 'https://www.google.com/recaptcha/enterprise.js?render=' + encodeURIComponent(k);
+      s.onerror = function () {
+        window.ZF_RECAPTCHA_LOAD_FAILED = true;
+      };
+      document.head.appendChild(s);
+    })();
+  </script>
 </head>
 <body>
 
@@ -866,14 +889,6 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal, .reveal-left').forEach(el => obs.observe(el));
 </script>
-<script>
-  /* Paste your Apps Script Web App URL (ends with /exec) after deploying scripts/zepfusion-enquiry.appscript.gs */
-  window.ZF_ENQUIRY_CONFIG = {
-    scriptUrl: 'https://script.google.com/macros/s/AKfycbyYC1zpHeENIxVZe_vGLqKapwbiBogWyXwdBvQpuDWFMNg3R1kcb4HsxOklKZ_ErOU6/exec',
-    siteKey: '6LfWgLgsAAAAAD9To06BgB2INXWCItosgmxdMdi0',
-    action: 'enquiry_submit'
-  };
-</script>
-<script src="./scripts/zepfusion-enquiry.js?v=4" defer></script>
+<script src="./scripts/zepfusion-enquiry.js?v=5" defer></script>
 </body>
 </html>
