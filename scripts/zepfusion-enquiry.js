@@ -87,9 +87,21 @@
     }
 
     submitBtn.disabled = true;
-    setStatus('info', 'Sending…');
+    setStatus('info', 'Verifying…');
+
+    function withTimeout(promise, ms, errMsg) {
+      return Promise.race([
+        promise,
+        new Promise(function (_, reject) {
+          setTimeout(function () {
+            reject(new Error(errMsg || 'timeout'));
+          }, ms);
+        }),
+      ]);
+    }
 
     function send(token) {
+      setStatus('info', 'Sending…');
       var params = new URLSearchParams();
       fd.forEach(function (value, key) {
         if (key !== 'website') params.append(key, value);
@@ -97,11 +109,17 @@
       params.set('recaptchaToken', token);
       params.set('source', fd.get('source') || 'home');
 
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var fetchTimer = setTimeout(function () {
+        if (controller) controller.abort();
+      }, 45000);
+
       fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
         body: params.toString(),
         mode: 'no-cors',
+        signal: controller ? controller.signal : undefined,
       })
         .then(function () {
           form.reset();
@@ -111,6 +129,7 @@
           setStatus('success', 'Thank you — if you do not hear from us within two business days, email support@zepfusion.com.');
         })
         .finally(function () {
+          clearTimeout(fetchTimer);
           submitBtn.disabled = false;
         });
     }
@@ -133,13 +152,20 @@
           return;
         }
         grecaptcha.enterprise.ready(function () {
-          grecaptcha.enterprise
-            .execute(siteKey, { action: action })
+          withTimeout(grecaptcha.enterprise.execute(siteKey, { action: action }), 30000, 'captcha-timeout')
             .then(function (token) {
+              if (!token || String(token).length < 10) {
+                setStatus('error', 'Security verification returned no token. Refresh the page and try again.');
+                submitBtn.disabled = false;
+                return;
+              }
               send(token);
             })
             .catch(function () {
-              setStatus('error', 'Security verification failed. Please try again.');
+              setStatus(
+                'error',
+                'Security check timed out or failed. Refresh the page, disable ad blockers for this site, and try again.'
+              );
               submitBtn.disabled = false;
             });
         });

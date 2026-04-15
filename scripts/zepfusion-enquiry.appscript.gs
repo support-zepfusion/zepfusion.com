@@ -19,6 +19,16 @@
 var RECAPTCHA_ACTION = 'enquiry_submit';
 var MIN_SCORE = 0.3;
 
+/**
+ * Opening the /exec URL in a browser sends GET — without doGet, Apps Script shows
+ * "Script function not found: doGet". The contact form uses POST only.
+ */
+function doGet() {
+  return ContentService.createTextOutput(
+    'Zepfusion enquiry endpoint is active. Submissions use POST from zepfusion.com only.'
+  ).setMimeType(ContentService.MimeType.TEXT);
+}
+
 function doPost(e) {
   var p = e.parameter || {};
   if (p.website && String(p.website).trim() !== '') {
