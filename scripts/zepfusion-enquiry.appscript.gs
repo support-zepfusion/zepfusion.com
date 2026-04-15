@@ -5,39 +5,44 @@
  *    Timestamp | FirstName | LastName | Email | Industry | TechNeed | Message | Source | RiskScore
  *
  * 2. Project Settings → Script properties:
- *    GCP_PROJECT_ID          = your GCP project id (e.g. figma-shadcn or zepfusion-prod)
+ *    GCP_PROJECT_ID          = your GCP project id
  *    RECAPTCHA_ENTERPRISE_API_KEY = API key with "reCAPTCHA Enterprise API" enabled
  *    RECAPTCHA_SITE_KEY      = same site key as on the website (public key)
  *
- * 3. GCP: enable "reCAPTCHA Enterprise API" for the project; create an API key restricted to that API.
+ * 3. GCP: enable "reCAPTCHA Enterprise API"; create an API key restricted to that API.
  *
  * 4. Deploy → New deployment → Web app
  *    Execute as: Me
  *    Who has access: Anyone
  *    Copy /exec URL into index.html ZF_ENQUIRY_CONFIG.scriptUrl
+ *
+ * reCAPTCHA: Checkbox tokens differ from score-based (v3) tokens — do not require a score
+ * when the API omits riskAnalysis, and do not send expectedAction in createAssessment
+ * for checkbox flows (see verifyEnterpriseToken_).
  */
 var RECAPTCHA_ACTION = 'enquiry_submit';
 var MIN_SCORE = 0.3;
 
-/**
- * Opening the /exec URL in a browser sends GET — without doGet, Apps Script shows
- * "Script function not found: doGet". The contact form uses POST only.
- */
 function doGet() {
   return ContentService.createTextOutput(
     'Zepfusion enquiry endpoint is active. Submissions use POST from zepfusion.com only.'
   ).setMimeType(ContentService.MimeType.TEXT);
 }
 
+/**
+ * Accepts JSON body (recommended) or form fields in e.parameter.
+ * Website should POST with Content-Type: text/plain;charset=utf-8 and JSON body so the
+ * browser can read the response (CORS-friendly simple request).
+ */
 function doPost(e) {
-  var p = e.parameter || {};
+  var p = parsePostPayload_(e);
   if (p.website && String(p.website).trim() !== '') {
-    return ContentService.createTextOutput('ok');
+    return textOut_('ok');
   }
 
   var token = p.recaptchaToken;
   if (!token) {
-    return ContentService.createTextOutput('error: missing token');
+    return textOut_('error: missing token');
   }
 
   var props = PropertiesService.getScriptProperties();
@@ -47,7 +52,7 @@ function doPost(e) {
 
   var check = verifyEnterpriseToken_(token, siteKey, projectId, apiKey);
   if (!check.ok) {
-    return ContentService.createTextOutput('error: captcha');
+    return textOut_('error: captcha');
   }
 
   try {
@@ -64,14 +69,50 @@ function doPost(e) {
       check.score,
     ]);
   } catch (err) {
-    return ContentService.createTextOutput('error: sheet ' + err);
+    return textOut_('error: sheet ' + err);
   }
-  return ContentService.createTextOutput('ok');
+  return textOut_('ok');
 }
 
+function parsePostPayload_(e) {
+  var p = {};
+  if (e.parameter && Object.keys(e.parameter).length > 0) {
+    p = shallowCopy_(e.parameter);
+  }
+  if (e.postData && e.postData.contents) {
+    var raw = String(e.postData.contents).trim();
+    if (raw.charAt(0) === '{') {
+      try {
+        var j = JSON.parse(raw);
+        if (j && typeof j === 'object') {
+          p = Object.assign(p, j);
+        }
+      } catch (ignore) {}
+    }
+  }
+  return p;
+}
+
+function shallowCopy_(obj) {
+  var o = {};
+  for (var k in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, k)) o[k] = obj[k];
+  }
+  return o;
+}
+
+function textOut_(s) {
+  return ContentService.createTextOutput(s).setMimeType(ContentService.MimeType.TEXT);
+}
+
+/**
+ * Checkbox / challenge tokens: tokenProperties.valid is the main signal.
+ * Do not send expectedAction in createAssessment for checkbox widgets — it can cause
+ * mismatches. Score-based (execute) tokens include riskAnalysis.score; only then apply MIN_SCORE.
+ */
 function verifyEnterpriseToken_(token, siteKey, projectId, apiKey) {
   if (!token || !siteKey || !projectId || !apiKey) {
-    return { ok: false, score: 0 };
+    return { ok: false, score: '' };
   }
   var url =
     'https://recaptchaenterprise.googleapis.com/v1/projects/' +
@@ -82,7 +123,6 @@ function verifyEnterpriseToken_(token, siteKey, projectId, apiKey) {
     event: {
       token: token,
       siteKey: siteKey,
-      expectedAction: RECAPTCHA_ACTION,
     },
   };
   var resp = UrlFetchApp.fetch(url, {
@@ -94,13 +134,26 @@ function verifyEnterpriseToken_(token, siteKey, projectId, apiKey) {
   var code = resp.getResponseCode();
   var text = resp.getContentText();
   if (code !== 200) {
-    return { ok: false, score: 0 };
+    return { ok: false, score: '' };
   }
   var body = JSON.parse(text);
   var valid = body.tokenProperties && body.tokenProperties.valid === true;
   var act = (body.tokenProperties && body.tokenProperties.action) || '';
-  var actionOk = act === '' || act === RECAPTCHA_ACTION;
-  var score = (body.riskAnalysis && body.riskAnalysis.score) || 0;
-  var ok = valid && actionOk && score >= MIN_SCORE;
-  return { ok: ok, score: score };
+  var scoreNum = body.riskAnalysis && typeof body.riskAnalysis.score === 'number' ? body.riskAnalysis.score : null;
+
+  if (!valid) {
+    return { ok: false, score: scoreNum !== null ? scoreNum : '' };
+  }
+  if (act !== '' && act !== RECAPTCHA_ACTION) {
+    return { ok: false, score: scoreNum !== null ? scoreNum : '' };
+  }
+
+  /** Checkbox challenge: action is usually empty — rely on valid. Score-based execute: enforce MIN_SCORE. */
+  var ok = true;
+  if (act === RECAPTCHA_ACTION) {
+    ok = scoreNum !== null && scoreNum >= MIN_SCORE;
+  }
+
+  var scoreCell = scoreNum !== null ? scoreNum : '';
+  return { ok: ok, score: scoreCell };
 }

@@ -176,12 +176,17 @@
 
     function send(token) {
       setStatus('info', 'Sending…');
-      var params = new URLSearchParams();
-      fd.forEach(function (value, key) {
-        if (key !== 'website') params.append(key, value);
-      });
-      params.set('recaptchaToken', token);
-      params.set('source', fd.get('source') || 'home');
+      /** JSON in body + text/plain avoids CORS preflight; browser can read response text from GAS. */
+      var payload = {
+        firstName: fd.get('firstName') || '',
+        lastName: fd.get('lastName') || '',
+        email: fd.get('email') || '',
+        industry: fd.get('industry') || '',
+        techNeed: fd.get('techNeed') || '',
+        message: fd.get('message') || '',
+        source: fd.get('source') || 'home',
+        recaptchaToken: token,
+      };
 
       var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
       var fetchTimer = setTimeout(function () {
@@ -190,22 +195,42 @@
 
       fetch(endpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-        body: params.toString(),
-        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        mode: 'cors',
         signal: controller ? controller.signal : undefined,
       })
-        .then(function () {
-          form.reset();
-          if (widgetId !== null && window.grecaptcha && grecaptcha.enterprise) {
-            try {
-              grecaptcha.enterprise.reset(widgetId);
-            } catch (err) {}
+        .then(function (res) {
+          return res.text().then(function (text) {
+            return { res: res, text: text };
+          });
+        })
+        .then(function (_ref) {
+          var text = (_ref.text || '').trim();
+          var ok = text === 'ok';
+          if (ok) {
+            form.reset();
+            if (widgetId !== null && window.grecaptcha && grecaptcha.enterprise) {
+              try {
+                grecaptcha.enterprise.reset(widgetId);
+              } catch (err) {}
+            }
+            setStatus('success', 'Thank you — we received your message and will get back to you soon.');
+            return;
           }
-          setStatus('success', 'Thank you — we received your message and will get back to you soon.');
+          var errMsg =
+            text.indexOf('error: captcha') === 0
+              ? 'Security verification failed. Complete the checkbox again and try, or email support@zepfusion.com.'
+              : text.indexOf('error:') === 0
+                ? 'Could not save your message. Please try again or email support@zepfusion.com.'
+                : 'Something went wrong. Please email support@zepfusion.com.';
+          setStatus('error', errMsg);
         })
         .catch(function () {
-          setStatus('success', 'Thank you — if you do not hear from us within two business days, email support@zepfusion.com.');
+          setStatus(
+            'error',
+            'Could not reach our form server (network or browser block). Check your connection, try another browser, or email support@zepfusion.com.'
+          );
         })
         .finally(function () {
           clearTimeout(fetchTimer);
