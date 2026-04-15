@@ -8,6 +8,9 @@
  *    GCP_PROJECT_ID          = your GCP project id
  *    RECAPTCHA_ENTERPRISE_API_KEY = API key with "reCAPTCHA Enterprise API" enabled
  *    RECAPTCHA_SITE_KEY      = same site key as on the website (public key)
+ *    SPREADSHEET_ID          = required if this project is NOT bound to the Sheet (copy from the Sheet URL:
+ *                            https://docs.google.com/spreadsheets/d/THIS_PART/edit )
+ *    SHEET_NAME              = optional tab name (default: active/first sheet)
  *
  * 3. GCP: enable "reCAPTCHA Enterprise API"; create an API key restricted to that API.
  *
@@ -56,7 +59,7 @@ function doPost(e) {
   }
 
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var sheet = getEnquirySheet_(props);
     sheet.appendRow([
       new Date(),
       p.firstName || '',
@@ -103,6 +106,41 @@ function shallowCopy_(obj) {
 
 function textOut_(s) {
   return ContentService.createTextOutput(s).setMimeType(ContentService.MimeType.TEXT);
+}
+
+/**
+ * Web apps often have no "active" spreadsheet unless the script was created via the Sheet
+ * (Extensions → Apps Script). If SPREADSHEET_ID is set, open that file by id.
+ */
+function getEnquirySheet_(props) {
+  var id = props.getProperty('SPREADSHEET_ID');
+  var ss = null;
+  if (id && String(id).replace(/\s/g, '') !== '') {
+    ss = SpreadsheetApp.openById(String(id).trim());
+  } else {
+    ss = SpreadsheetApp.getActiveSpreadsheet();
+  }
+  if (!ss) {
+    throw new Error(
+      'Set Script property SPREADSHEET_ID to your Google Sheet id, or recreate this script from inside the Sheet (Extensions → Apps Script).'
+    );
+  }
+  var tab = props.getProperty('SHEET_NAME');
+  if (tab && String(tab).replace(/\s/g, '') !== '') {
+    var byName = ss.getSheetByName(String(tab).trim());
+    if (byName) {
+      return byName;
+    }
+  }
+  var active = ss.getActiveSheet();
+  if (active) {
+    return active;
+  }
+  var sheets = ss.getSheets();
+  if (sheets && sheets.length > 0) {
+    return sheets[0];
+  }
+  throw new Error('Spreadsheet has no sheets.');
 }
 
 /**
