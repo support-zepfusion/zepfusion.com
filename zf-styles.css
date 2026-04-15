@@ -52,6 +52,81 @@
       transition: color 0.2s, background 0.2s;
     }
     .nav-pill:hover { color: var(--text-primary); background: rgba(255,255,255,0.07); }
+
+    /* Index: Sectors dropdown (desktop) */
+    .nav-sectors-wrap {
+      position: relative;
+    }
+    button.nav-sectors-trigger {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      line-height: 1.2;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-sectors-caret {
+      flex-shrink: 0;
+      font-size: 1.05rem;
+      line-height: 1;
+      opacity: 0.88;
+      transform: translateY(2px);
+    }
+    .nav-sectors-panel {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      min-width: 248px;
+      padding: 8px;
+      background: var(--brand-card);
+      border: 1px solid var(--brand-border);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+    .nav-sectors-wrap:hover .nav-sectors-panel,
+    .nav-sectors-wrap:focus-within .nav-sectors-panel,
+    .nav-sectors-wrap.is-open .nav-sectors-panel {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .nav-sectors-link {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-sectors-link:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.07);
+    }
+    [data-theme="light"] .nav-sectors-link:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+    .nav-sectors-link--overview {
+      font-size: 0.74rem;
+      opacity: 0.9;
+    }
+    .nav-sectors-link--agro { color: #4AC864 !important; }
+    .nav-sectors-link--health { color: var(--coral) !important; }
+    .nav-sectors-link--legal { color: var(--amber) !important; }
+    .nav-sectors-link--edu { color: var(--teal) !important; }
+
     .nav-cta {
       background: var(--coral); color: #fff;
       font-size: 0.8rem; font-weight: 600;
@@ -337,6 +412,12 @@
     .sector-card.coral::before { background: radial-gradient(circle at 20% 20%, rgba(224,80,98,0.06) 0%, transparent 60%); }
     .sector-card.amber:hover { border-color: rgba(253,196,70,0.35); }
     .sector-card.amber::before { background: radial-gradient(circle at 20% 20%, rgba(253,196,70,0.05) 0%, transparent 60%); }
+    /* Legal sector overview (index) — distinct from generic amber manufacturing card */
+    .sector-card.zflegal:hover { border-color: rgba(253,196,70,0.4); }
+    .sector-card.zflegal::before { background: radial-gradient(circle at 20% 20%, rgba(253,196,70,0.08) 0%, transparent 60%); }
+    /* Agro sector overview (index) */
+    .sector-card.zfagro:hover { border-color: rgba(74,200,100,0.45); }
+    .sector-card.zfagro::before { background: radial-gradient(circle at 20% 20%, rgba(74,200,100,0.1) 0%, transparent 60%); }
 
     .sector-icon-box {
       width: 52px; height: 52px; border-radius: 14px;
@@ -674,8 +755,14 @@
     }
     /* accents stay the same in both modes */
 
-    /* Education page */
-    #edu-hero {
+    /* Education / Healthcare / Legal / Agro / Real world assets landing heroes */
+    #edu-hero,
+    #health-hero,
+    #legal-hero,
+    #agro-hero,
+    #ra-hero {
+      position: relative;
+      overflow: hidden;
       min-height: auto !important;
       padding: 120px 0 72px !important;
     }

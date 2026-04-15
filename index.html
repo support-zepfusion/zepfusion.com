@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
   <title>Zepfusion Noble Path Ventures — Technology for Industry</title>
-  <meta name="description" content="Zepfusion Noble Path Ventures delivers turnkey software, enterprise integrations, and intelligent platforms for agro-commerce, pharma, legal, manufacturing, healthcare, and education. Cloud, APIs, blockchain, AI, ERP, and mobile." />
+  <meta name="description" content="Zepfusion Noble Path Ventures delivers turnkey software, enterprise integrations, and intelligent platforms for agro-commerce, legal, healthcare, and education. Cloud, APIs, blockchain, AI, ERP, and mobile." />
   <link rel="canonical" href="https://zepfusion.com/" />
   <meta name="robots" content="index, follow" />
   <meta property="og:locale" content="en_IN" />
@@ -14,7 +14,7 @@
   <meta property="og:url" content="https://zepfusion.com/" />
   <meta property="og:site_name" content="Zepfusion Noble Path Ventures" />
   <meta property="og:title" content="Zepfusion Noble Path Ventures — Technology for Industry" />
-  <meta property="og:description" content="Zepfusion Noble Path Ventures delivers turnkey software, enterprise integrations, and intelligent platforms for agro-commerce, pharma, legal, manufacturing, healthcare, and education." />
+  <meta property="og:description" content="Zepfusion Noble Path Ventures delivers turnkey software, enterprise integrations, and intelligent platforms for agro-commerce, legal, healthcare, and education." />
   <meta property="og:image" content="https://zepfusion.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -24,13 +24,13 @@
   <meta name="twitter:title" content="Zepfusion Noble Path Ventures — Technology for Industry" />
   <meta name="twitter:description" content="Turnkey software and enterprise integrations for essential industries—cloud, APIs, blockchain, AI, ERP, and mobile." />
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"Zepfusion Noble Path Ventures Private Limited","alternateName":"Zepfusion","url":"https://zepfusion.com/","description":"Technology company building turnkey digital products for agro-commerce, pharma, legal, manufacturing, healthcare, and education.","address":{"@type":"PostalAddress","addressCountry":"IN"}}
+  {"@context":"https://schema.org","@type":"Organization","name":"Zepfusion Noble Path Ventures Private Limited","alternateName":"Zepfusion","url":"https://zepfusion.com/","description":"Technology company building turnkey digital products for agro-commerce, legal, healthcare, and education.","address":{"@type":"PostalAddress","addressCountry":"IN"}}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="./zf-styles.css?v=12" />
+  <link rel="stylesheet" href="./zf-styles.css?v=21" />
   <link rel="preconnect" href="https://www.google.com" />
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
   <script>
@@ -97,9 +97,21 @@
       </a>
 
       <div class="hidden md:flex" style="align-items:center;gap:4px;">
-        <a href="#sectors"  class="nav-pill">Sectors</a>
+        <div class="nav-sectors-wrap">
+          <button type="button" class="nav-pill nav-sectors-trigger" id="zf-nav-sectors-btn" aria-haspopup="true" aria-expanded="false" aria-controls="zf-nav-sectors-menu">
+            Sectors
+            <span class="nav-sectors-caret" aria-hidden="true">▾</span>
+          </button>
+          <div id="zf-nav-sectors-menu" class="nav-sectors-panel" role="menu" aria-labelledby="zf-nav-sectors-btn">
+            <a href="#sectors" class="nav-sectors-link nav-sectors-link--overview" role="menuitem">Sector overview</a>
+            <a href="agro-commerce.html" class="nav-sectors-link nav-sectors-link--agro" role="menuitem" title="Zepfusion Agro">Agro</a>
+            <a href="healthcare-diagnostics.html" class="nav-sectors-link nav-sectors-link--health" role="menuitem" title="Zepfusion Health">Healthcare</a>
+            <a href="legal-law-firms.html" class="nav-sectors-link nav-sectors-link--legal" role="menuitem" title="Zepfusion Legal">Legal</a>
+            <a href="education.html" class="nav-sectors-link nav-sectors-link--edu" role="menuitem" title="ZepFusion Skill Exchange">Skill Exchange</a>
+            <a href="real-world-assets.html" class="nav-sectors-link" role="menuitem" title="Real world assets (RWA): tokenization, carbon &amp; artisan NFTs" style="color:rgba(160,100,240,0.95) !important;">Real world assets</a>
+          </div>
+        </div>
         <a href="#platform" class="nav-pill">Platform</a>
-        <a href="education.html" class="nav-pill" title="ZepFusion Skill Exchange">Skill Exchange</a>
         <a href="#approach" class="nav-pill">Approach</a>
         <a href="#about"    class="nav-pill">About</a>
         <a href="#contact"  class="nav-pill">Contact</a>
@@ -137,9 +149,14 @@
   </div>
   <div id="mobile-menu" style="border-top:1px solid var(--brand-border);">
     <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;flex-direction:column;gap:4px;">
-      <a href="#sectors"  class="mobile-link nav-pill" style="display:block;">Sectors</a>
+      <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);padding:4px 0 2px;">Sectors</div>
+      <a href="#sectors" class="mobile-link nav-pill" style="display:block;padding-left:16px;">Sector overview</a>
+      <a href="agro-commerce.html" class="mobile-link nav-pill" style="display:block;padding-left:16px;color:#4AC864;" title="Zepfusion Agro">Agro</a>
+      <a href="healthcare-diagnostics.html" class="mobile-link nav-pill" style="display:block;padding-left:16px;color:var(--coral);" title="Zepfusion Health">Healthcare</a>
+      <a href="legal-law-firms.html" class="mobile-link nav-pill" style="display:block;padding-left:16px;color:var(--amber);" title="Zepfusion Legal">Legal</a>
+      <a href="education.html" class="mobile-link nav-pill" style="display:block;padding-left:16px;color:var(--teal);" title="ZepFusion Skill Exchange">Skill Exchange</a>
+      <a href="real-world-assets.html" class="mobile-link nav-pill" style="display:block;padding-left:16px;color:#B894F5;" title="Real world assets">Real world assets</a>
       <a href="#platform" class="mobile-link nav-pill" style="display:block;">Platform</a>
-      <a href="education.html" class="mobile-link nav-pill" style="display:block;" title="ZepFusion Skill Exchange">Skill Exchange</a>
       <a href="#approach" class="mobile-link nav-pill" style="display:block;">Approach</a>
       <a href="#about"    class="mobile-link nav-pill" style="display:block;">About</a>
       <a href="#contact"  class="mobile-link nav-pill" style="display:block;">Contact</a>
@@ -177,16 +194,15 @@
         </h1>
 
         <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.75;max-width:520px;margin-bottom:36px;">
-          Zepfusion delivers turnkey software products, enterprise integrations, and intelligent platforms that transform how agro-commerce, pharma, law firms, manufacturers, and <a href="education.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.45);">ZepFusion Skill Exchange–style learning marketplaces</a> operate.
+          Zepfusion delivers turnkey software products, enterprise integrations, and intelligent platforms that transform how <a href="agro-commerce.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(74,200,100,0.45);">agro-commerce</a>, <a href="legal-law-firms.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(253,196,70,0.45);">law firms</a>, <a href="healthcare-diagnostics.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(224,80,98,0.45);">diagnostic and pathology networks</a>, and <a href="education.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.45);">ZepFusion Skill Exchange–style learning marketplaces</a> operate.
         </p>
 
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px;">
-          <span class="sector-tag"><span class="sector-icon">🌾</span> Agro-Commerce</span>
-          <span class="sector-tag"><span class="sector-icon">💊</span> Pharma</span>
-          <span class="sector-tag"><span class="sector-icon">⚖️</span> Law Firms</span>
-          <span class="sector-tag"><span class="sector-icon">🏭</span> Manufacturing</span>
-          <span class="sector-tag"><span class="sector-icon">🏥</span> Healthcare</span>
+          <a href="agro-commerce.html" class="sector-tag" title="Zepfusion Agro"><span class="sector-icon">🌾</span> Agro-Commerce</a>
+          <a href="legal-law-firms.html" class="sector-tag" title="Zepfusion Legal"><span class="sector-icon">⚖️</span> Law Firms</a>
+          <a href="healthcare-diagnostics.html" class="sector-tag" title="Zepfusion Health"><span class="sector-icon">🏥</span> Healthcare</a>
           <a href="education.html" class="sector-tag" title="ZepFusion Skill Exchange"><span class="sector-icon">✦</span> Skill Exchange</a>
+          <a href="real-world-assets.html" class="sector-tag" title="Real world assets (RWA): tokenization, carbon &amp; artisan NFTs"><span class="sector-icon">⛓️</span> Real world assets</a>
         </div>
 
         <div style="display:flex;flex-wrap:wrap;gap:12px;">
@@ -292,93 +308,69 @@
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;">
 
-      <!-- Agro -->
-      <div class="sector-card reveal">
+      <div id="agro-sector" class="sector-card zfagro reveal" style="position:relative;">
         <div class="sector-icon-box icon-green">🌾</div>
         <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Agro-Commerce</h3>
         <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.7;margin-bottom:20px;">
-          We digitise the entire agro-supply chain — from farm procurement and cold-chain logistics to marketplace platforms and export documentation. Our platforms give agro-businesses real-time visibility, traceability, and operational intelligence.
+          <strong style="color:var(--text-primary);">Zepfusion Agro</strong> — farmer onboarding to market: AI-guided cultivation, optional blockchain crop traceability, direct commerce, logistics, and finance—phased MVP to scale; workforce training on ZepFusion Skill Exchange.
         </p>
         <div style="margin-bottom:20px;">
-          <span class="chip chip-green">Farm-to-Market Platforms</span>
-          <span class="chip chip-green">Supply Chain Traceability</span>
-          <span class="chip chip-green">Commodity Trading Apps</span>
-          <span class="chip chip-green">IoT & Sensor Integration</span>
-          <span class="chip chip-green">Export Compliance Tools</span>
+          <span class="chip chip-green">Identity &amp; land</span>
+          <span class="chip chip-green">AI advisory</span>
+          <span class="chip chip-green">Batch &amp; QR trace</span>
+          <span class="chip chip-green">Marketplace</span>
+          <span class="chip chip-green">Credit &amp; logistics</span>
+          <span class="chip chip-green">India: eNAM · FPO</span>
         </div>
-        <a href="#contact" style="font-size:0.8rem;font-weight:600;color:#4AC864;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;position:relative;z-index:2;">
+          <a href="agro-commerce.html" style="font-size:0.8rem;font-weight:600;color:var(--text-primary);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Full overview →</a>
+          <a href="#contact" style="font-size:0.8rem;font-weight:600;color:#4AC864;text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
+        </div>
+        <a href="agro-commerce.html" aria-label="Agro-Commerce — open full overview" style="position:absolute;inset:0;border-radius:20px;z-index:1;"></a>
       </div>
 
-      <!-- Pharma -->
-      <div class="sector-card coral reveal">
-        <div class="sector-icon-box icon-coral">💊</div>
-        <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Pharma & Life Sciences</h3>
+      <div id="legal-sector" class="sector-card zflegal reveal" style="position:relative;">
+        <div class="sector-icon-box icon-amber">⚖️</div>
+        <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Legal &amp; Law Firms</h3>
         <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.7;margin-bottom:20px;">
-          Regulatory-grade software for pharma manufacturers and distributors — from serialisation and batch traceability to clinical data management, quality systems, and ERP integration with SAP or Oracle.
+          <strong style="color:var(--text-primary);">Zepfusion Legal</strong> — credible intake, matter discipline, documents and e-sign, time and billing; optional <strong style="color:var(--text-primary);">AI-assisted</strong> desk work, <strong style="color:var(--text-primary);">IPFS-style</strong> content addressing, and <strong style="color:var(--text-primary);">anchored</strong> hashes for audit—plus paralegal and legal ops training on ZepFusion Skill Exchange.
         </p>
         <div style="margin-bottom:20px;">
-          <span class="chip chip-coral">Serialisation & Track/Trace</span>
-          <span class="chip chip-coral">Clinical Data Management</span>
-          <span class="chip chip-coral">QMS Software</span>
-          <span class="chip chip-coral">SAP / Oracle Integration</span>
-          <span class="chip chip-coral">Regulatory Compliance Apps</span>
+          <span class="chip chip-amber">Web &amp; appointments</span>
+          <span class="chip chip-amber">Matters &amp; tasks</span>
+          <span class="chip chip-amber">Documents &amp; e-sign</span>
+          <span class="chip chip-amber">Time &amp; billing</span>
+          <span class="chip chip-amber">AI · IPFS · anchor</span>
+          <span class="chip chip-amber">Staff training · Skill Exchange</span>
         </div>
-        <a href="#contact" style="font-size:0.8rem;font-weight:600;color:var(--coral);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;position:relative;z-index:2;">
+          <a href="legal-law-firms.html" style="font-size:0.8rem;font-weight:600;color:var(--text-primary);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Full overview →</a>
+          <a href="#contact" style="font-size:0.8rem;font-weight:600;color:var(--amber);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
+        </div>
+        <a href="legal-law-firms.html" aria-label="Legal &amp; Law Firms — open full overview" style="position:absolute;inset:0;border-radius:20px;z-index:1;"></a>
       </div>
 
-      <!-- Law Firms -->
-      <div class="sector-card reveal">
-        <div class="sector-icon-box icon-teal">⚖️</div>
-        <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Legal & Law Firms</h3>
-        <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.7;margin-bottom:20px;">
-          Intelligent legal technology — AI-powered contract analysis, case management systems, document automation, legal transcription pipelines, and client portal solutions. We help law firms operate with the precision of a tech company.
-        </p>
-        <div style="margin-bottom:20px;">
-          <span class="chip chip-teal">AI Contract Analysis</span>
-          <span class="chip chip-teal">Case Management Systems</span>
-          <span class="chip chip-teal">Legal Transcription AI</span>
-          <span class="chip chip-teal">Document Automation</span>
-          <span class="chip chip-teal">Client Portals</span>
-        </div>
-        <a href="#contact" style="font-size:0.8rem;font-weight:600;color:var(--teal);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
-      </div>
-
-      <!-- Manufacturing -->
-      <div class="sector-card amber reveal">
-        <div class="sector-icon-box icon-amber">🏭</div>
-        <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Manufacturing</h3>
-        <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.7;margin-bottom:20px;">
-          End-to-end manufacturing intelligence — MES systems, shop-floor digitisation, procurement automation, and SAP integration for production planning. We eliminate spreadsheets and silos by connecting every node of the factory floor.
-        </p>
-        <div style="margin-bottom:20px;">
-          <span class="chip chip-amber">MES & Shop Floor Systems</span>
-          <span class="chip chip-amber">SAP S/4HANA Integration</span>
-          <span class="chip chip-amber">Procurement Automation</span>
-          <span class="chip chip-amber">Digital Twin Solutions</span>
-          <span class="chip chip-amber">Production Analytics</span>
-        </div>
-        <a href="#contact" style="font-size:0.8rem;font-weight:600;color:var(--amber);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
-      </div>
-
-      <!-- Healthcare -->
-      <div class="sector-card reveal">
+      <div id="healthcare" class="sector-card coral reveal" style="position:relative;">
         <div class="sector-icon-box icon-coral">🏥</div>
-        <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Healthcare & Diagnostics</h3>
+        <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:10px;">Healthcare &amp; Diagnostics</h3>
         <p style="color:var(--text-muted);font-size:0.875rem;line-height:1.7;margin-bottom:20px;">
-          Healthcare IT solutions built for hospitals, diagnostic centres, and teleclinics — from patient management systems and medical transcription AI to HIPAA-compliant data platforms and telemedicine infrastructure.
+          <strong style="color:var(--text-primary);">Zepfusion Health</strong> — modern bookings, lab operations, trusted reports, and training for your pathology and lab teams through ZepFusion Skill Exchange—without drowning you in technical jargon.
         </p>
         <div style="margin-bottom:20px;">
-          <span class="chip chip-coral">HMIS / EMR Systems</span>
-          <span class="chip chip-coral">Medical Transcription AI</span>
-          <span class="chip chip-coral">Telemedicine Platforms</span>
-          <span class="chip chip-coral">Diagnostic Data Analytics</span>
-          <span class="chip chip-coral">Lab Information Systems</span>
+          <span class="chip chip-coral">Lab &amp; branch ops</span>
+          <span class="chip chip-coral">Patient &amp; doctor portals</span>
+          <span class="chip chip-coral">Care team views &amp; history</span>
+          <span class="chip chip-coral">QR report verification</span>
+          <span class="chip chip-coral">Staff training · Skill Exchange</span>
         </div>
-        <a href="#contact" style="font-size:0.8rem;font-weight:600;color:var(--coral);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;position:relative;z-index:2;">
+          <a href="healthcare-diagnostics.html" style="font-size:0.8rem;font-weight:600;color:var(--text-primary);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Full overview →</a>
+          <a href="#contact" style="font-size:0.8rem;font-weight:600;color:var(--coral);text-decoration:none;display:inline-flex;align-items:center;gap:5px;">Build with us →</a>
+        </div>
+        <a href="healthcare-diagnostics.html" aria-label="Healthcare &amp; Diagnostics — open full overview" style="position:absolute;inset:0;border-radius:20px;z-index:1;"></a>
       </div>
 
-      <!-- ZepFusion Skill Exchange — whole card links to education.html; footer row above overlay for CTAs -->
-      <div id="edtech" class="sector-card reveal">
+      <div id="edtech" class="sector-card reveal" style="position:relative;">
         <div class="sector-icon-box icon-teal">✦</div>
         <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:4px;">ZepFusion Skill Exchange</h3>
         <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Bharat Skills Exchange</div>
@@ -400,7 +392,6 @@
         <a href="education.html" aria-label="ZepFusion Skill Exchange — open full overview" style="position:absolute;inset:0;border-radius:20px;z-index:1;"></a>
       </div>
 
-      <!-- CTA card -->
       <div style="background:linear-gradient(135deg,rgba(68,171,182,0.12) 0%,rgba(224,80,98,0.1) 100%);border:1px solid rgba(68,171,182,0.25);border-radius:20px;padding:32px;display:flex;flex-direction:column;justify-content:center;" class="reveal">
         <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;">Your Industry</div>
         <h3 style="font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:12px;">Don't see your sector?</h3>
@@ -408,6 +399,36 @@
         <a href="#contact" class="btn-primary" style="align-self:flex-start;">Let's Talk →</a>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- Digital ownership platform (full story on real-world-assets.html) -->
+<section id="digital-ownership" style="padding:88px 0;background:var(--brand-surface);position:relative;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+    <div class="reveal digital-ownership-grid" style="display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;">
+      <div>
+        <div class="section-label" style="margin-bottom:12px;">Digital ownership</div>
+        <h2 class="section-title" style="margin-bottom:16px;">Own Real Assets.<br/><span class="accent-teal">Preserve Culture.</span> <span class="accent-coral">Trade Digitally.</span></h2>
+        <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.75;margin-bottom:24px;max-width:520px;">
+          A unified platform for real estate tokenization, verified carbon credits, and authentic handicraft NFTs—powered by secure digital ownership. <strong style="color:var(--text-primary);">From culture to capital: tokenizing real value.</strong>
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <a href="real-world-assets.html" class="btn-primary">Explore the platform →</a>
+          <a href="#contact" class="btn-ghost">Talk to us</a>
+        </div>
+      </div>
+      <div style="background:var(--brand-card);border:1px solid var(--brand-border);border-radius:20px;padding:28px 24px;">
+        <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:14px;">Includes</div>
+        <ul style="margin:0;padding:0 0 0 1.1rem;color:var(--text-muted);font-size:0.88rem;line-height:1.75;">
+          <li style="margin-bottom:8px;">Real estate tokenization &amp; fractional ownership</li>
+          <li style="margin-bottom:8px;">Carbon credit marketplace</li>
+          <li style="margin-bottom:8px;">Handicraft NFT marketplace</li>
+          <li>Trading for tokenized assets</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -453,7 +474,7 @@
           <div style="width:40px;height:40px;border-radius:10px;background:rgba(224,80,98,0.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">⛓️</div>
           <div>
             <div style="font-size:0.95rem;font-weight:600;color:var(--text-primary);margin-bottom:5px;">Blockchain & Distributed Ledger</div>
-            <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.65;">Smart contracts, permissioned blockchains, and tokenisation for supply chain provenance, pharmaceutical serialisation, legal document notarisation, and <a href="education.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.4);">verifiable certificates for education</a> and workforce credentials.</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.65;">Smart contracts, permissioned blockchains, and tokenisation for supply chain provenance, regulated product traceability, legal document notarisation, and <a href="education.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.4);">verifiable certificates for education</a> and workforce credentials.</div>
           </div>
         </div>
 
@@ -551,7 +572,7 @@
           Zepfusion Noble Path Ventures Private Limited is an India-incorporated technology company built around one conviction: the industries that feed, heal, and run the world deserve world-class software.
         </p>
         <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.75;margin-bottom:24px;">
-          We bridge deep domain understanding of agro-commerce, pharma, legal, manufacturing, healthcare, and <a href="education.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.45);" title="ZepFusion Skill Exchange">education</a> with cutting-edge engineering — delivering turnkey digital products that companies can adopt end-to-end.
+          We bridge deep domain understanding of agro-commerce, legal, healthcare, and <a href="education.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.45);" title="ZepFusion Skill Exchange">education</a> with cutting-edge engineering — delivering turnkey digital products that companies can adopt end-to-end. We also build <a href="real-world-assets.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(160,100,240,0.45);">digital ownership</a> experiences for real assets, carbon markets, and culture.
         </p>
         <div class="about-mvg-grid reveal">
           <div class="about-mvg-card">
@@ -658,7 +679,7 @@
       Let's Build Your<br/><span style="color:var(--teal);">Industry-Defining</span> Platform
     </h2>
     <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.7;margin-bottom:32px;">
-      Whether you need a turnkey ERP, a <a href="education.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.45);">ZepFusion Skill Exchange–style marketplace</a> with verifiable credentials, a blockchain supply chain, an AI-powered legal platform, or a mobile app for the field — we scope, build, and deliver it.
+      Whether you need a turnkey ERP, a <a href="healthcare-diagnostics.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(224,80,98,0.45);">diagnostics platform</a>, a <a href="education.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.45);">ZepFusion Skill Exchange–style marketplace</a> with verifiable credentials, a blockchain supply chain, a <a href="legal-law-firms.html" style="color:var(--text-primary);text-decoration:none;border-bottom:1px solid rgba(253,196,70,0.45);">modern legal practice platform</a>, or a mobile app for the field — we scope, build, and deliver it.
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
       <a href="#contact" class="btn-primary">Start a Conversation →</a>
@@ -717,10 +738,9 @@
               <select id="zf-enquiry-industry" name="industry" class="form-input" required>
                 <option value="">Select your industry…</option>
                 <option value="Agro-Commerce / Food &amp; Agriculture">Agro-Commerce / Food &amp; Agriculture</option>
-                <option value="Pharma &amp; Life Sciences">Pharma &amp; Life Sciences</option>
                 <option value="Legal / Law Firm">Legal / Law Firm</option>
-                <option value="Manufacturing &amp; Industrial">Manufacturing &amp; Industrial</option>
                 <option value="Healthcare &amp; Diagnostics">Healthcare &amp; Diagnostics</option>
+                <option value="Real Estate / Carbon / NFTs — Digital Ownership">Real Estate / Carbon / NFTs — Digital Ownership</option>
                 <option value="ZepFusion Skill Exchange / EdTech / Learning Marketplace">ZepFusion Skill Exchange / EdTech / Learning Marketplace</option>
                 <option value="Other">Other</option>
               </select>
@@ -769,7 +789,7 @@
           <span class="footer-brand-name">ZEPFUSION NOBLE PATH VENTURES PRIVATE LIMITED</span>
         </div>
         <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.7;max-width:300px;margin-bottom:20px;">
-          A technology company building next-generation digital products for agro-commerce, pharma, legal, manufacturing, healthcare, and <a href="education.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.35);" title="ZepFusion Skill Exchange">education</a> industries.
+          A technology company building next-generation digital products for agro-commerce, legal, healthcare, <a href="education.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(68,171,182,0.35);" title="ZepFusion Skill Exchange">education</a>, and <a href="real-world-assets.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(160,100,240,0.35);">digital ownership</a>.
         </p>
         <div style="display:flex;gap:10px;">
           <a href="#" style="width:32px;height:32px;background:var(--brand-card);border:1px solid var(--brand-border);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;" title="LinkedIn">
@@ -781,11 +801,10 @@
       <div>
         <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;">Sectors</div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
-          <li><a href="#sectors" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Agro-Commerce</a></li>
-          <li><a href="#sectors" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Pharma & Life Sciences</a></li>
-          <li><a href="#sectors" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Legal & Law Firms</a></li>
-          <li><a href="#sectors" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Manufacturing</a></li>
-          <li><a href="#sectors" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Healthcare</a></li>
+          <li><a href="agro-commerce.html" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Agro-Commerce</a></li>
+          <li><a href="legal-law-firms.html" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Legal &amp; Law Firms</a></li>
+          <li><a href="healthcare-diagnostics.html" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Healthcare &amp; Diagnostics</a></li>
+          <li><a href="real-world-assets.html" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">Real world assets</a></li>
           <li><a href="education.html" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">ZepFusion Skill Exchange</a></li>
         </ul>
       </div>
@@ -826,6 +845,7 @@
 <style>
   @media (max-width: 768px) {
     .hero-grid-layout { grid-template-columns: 1fr !important; }
+    .digital-ownership-grid { grid-template-columns: 1fr !important; }
     .platform-grid    { grid-template-columns: 1fr !important; }
     .about-mvg-grid   { grid-template-columns: 1fr !important; }
     .contact-grid     { grid-template-columns: 1fr !important; }
@@ -864,6 +884,33 @@
 
   document.getElementById('theme-toggle-btn')?.addEventListener('click', toggleTheme);
   document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+
+  // ---- Sectors dropdown (touch / no-hover devices) ----
+  (function () {
+    const wrap = document.querySelector('.nav-sectors-wrap');
+    const btn = document.getElementById('zf-nav-sectors-btn');
+    if (!wrap || !btn) return;
+    const mq = window.matchMedia('(hover: none)');
+    function setOpen(on) {
+      wrap.classList.toggle('is-open', on);
+      btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function (e) {
+      if (!mq.matches) return;
+      e.stopPropagation();
+      setOpen(!wrap.classList.contains('is-open'));
+    });
+    document.addEventListener('click', function (e) {
+      if (!mq.matches) return;
+      if (!wrap.contains(e.target)) setOpen(false);
+    });
+    wrap.querySelectorAll('.nav-sectors-link').forEach(function (a) {
+      a.addEventListener('click', function () { setOpen(false); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  })();
 
   // ---- HAMBURGER ----
   // Hamburger
