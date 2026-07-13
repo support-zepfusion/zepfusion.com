@@ -27,6 +27,27 @@
       font-family: 'Bricolage Grotesque', sans-serif;
     }
 
+    /* Enterprise AI workforce */
+    .ai-agents-section { padding: 104px 0; background: var(--brand-surface); position: relative; overflow: hidden; }
+    .ai-agents-section::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 15% 15%, rgba(68,171,182,.12), transparent 32%), radial-gradient(circle at 85% 80%, rgba(224,80,98,.09), transparent 30%); }
+    .ai-shell { width: min(1200px, calc(100% - 48px)); margin: 0 auto; position: relative; }
+    .ai-section-head { max-width: 720px; margin-bottom: 48px; }
+    .ai-section-head .section-label { margin-bottom: 12px; }
+    .ai-section-head p { max-width: 650px; margin-top: 18px; color: var(--text-muted); line-height: 1.75; }
+    .agent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .agent-card { min-height: 250px; padding: 28px; border: 1px solid var(--brand-border); border-radius: 20px; background: var(--brand-card); display: flex; flex-direction: column; transition: transform .25s ease, border-color .25s ease; }
+    .agent-card:hover { transform: translateY(-4px); border-color: rgba(68,171,182,.45); }
+    .agent-kicker { color: var(--teal); font-size: .68rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .agent-card h3 { margin: 12px 0 10px; font-size: 1.35rem; color: var(--text-primary); }
+    .agent-card p { color: var(--text-muted); font-size: .86rem; line-height: 1.7; margin: 0 0 24px; }
+    .agent-flow { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin-top: auto; }
+    .agent-flow span { padding: 5px 8px; border-radius: 999px; background: rgba(68,171,182,.1); color: var(--text-primary); font-size: .66rem; }
+    .agent-flow b { color: var(--teal); font-size: .7rem; }
+    .agent-card--cta { background: linear-gradient(145deg, rgba(68,171,182,.18), rgba(224,80,98,.1)); border-color: rgba(68,171,182,.3); }
+    .agent-link { margin-top: auto; color: var(--teal); font-size: .82rem; font-weight: 700; text-decoration: none; }
+    @media (max-width: 960px) { .agent-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 620px) { .ai-shell { width: min(100% - 32px, 1200px); } .agent-grid { grid-template-columns: 1fr; } .ai-agents-section { padding: 76px 0; } }
+
     /* ---- NOISE OVERLAY ---- */
     body::before {
       content: '';
