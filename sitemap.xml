@@ -74,6 +74,12 @@
     <priority>0.4</priority>
   </url>
   <url>
+    <loc>https://zepfusion.com/data-deletion-policy.html</loc>
+    <lastmod>2026-10-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
     <loc>https://zepfusion.com/product-pricing.html</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
